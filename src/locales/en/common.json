@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "Decomplex Admin",
+    "description": "Log in to the admin panel to manage the platform"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "loginButton": "Sign in"
+  },
+  "validation": {
+    "emailRequired": "Please enter email",
+    "emailInvalid": "Invalid email format",
+    "passwordRequired": "Please enter password"
+  },
+  "messages": {
+    "loginSuccess": "Login successful (stub). We will handle tokens later.",
+    "loginError": "Login failed",
+    "unknownError": "Unexpected error occurred"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "ru": "Русский",
+    "hy": "Հայերեն"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark"
+  }
+}
