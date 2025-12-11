@@ -1,12 +1,15 @@
 import React from "react";
-import { ConfigProvider, theme as antdTheme, Space, Select, Switch, Typography } from "antd";
-import { GlobalOutlined, BulbOutlined } from "@ant-design/icons";
+import { ConfigProvider, theme as antdTheme } from "antd";
+import { Routes, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+import { TopBar } from "./components/layout/TopBar";
 import { LoginPage } from "./pages/auth/LoginPage";
+import { MainLayout } from "./layout/MainLayout";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { PublicOnlyRoute } from "./routes/PublicOnlyRoute";
 
 type ThemeMode = "light" | "dark";
-
-const { Text } = Typography;
 
 const App: React.FC = () => {
   const [themeMode, setThemeMode] = React.useState<ThemeMode>(() => {
@@ -47,39 +50,34 @@ const App: React.FC = () => {
       }}
     >
       <div className="app-root">
-        <header className="app-topbar">
-          <Space size="large">
-            <Space>
-              <GlobalOutlined />
-              <Text>{t("language.label")}:</Text>
-              <Select
-                size="small"
-                value={currentLanguage}
-                style={{ width: 130 }}
-                onChange={handleChangeLanguage}
-                options={[
-                  { value: "en", label: t("language.en") },
-                  { value: "ru", label: t("language.ru") },
-                  { value: "hy", label: t("language.hy") },
-                ]}
-              />
-            </Space>
-
-            <Space>
-              <BulbOutlined />
-              <Text>{t("theme.label")}:</Text>
-              <Switch
-                checked={themeMode === "dark"}
-                onChange={handleToggleTheme}
-                checkedChildren={t("theme.dark")}
-                unCheckedChildren={t("theme.light")}
-              />
-            </Space>
-          </Space>
-        </header>
+        <TopBar
+          currentLanguage={currentLanguage}
+          onChangeLanguage={handleChangeLanguage}
+          isDark={isDark}
+          onToggleTheme={handleToggleTheme}
+          t={t}
+        />
 
         <main className="app-content">
-          <LoginPage />
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <PublicOnlyRoute>
+                  <LoginPage />
+                </PublicOnlyRoute>
+              }
+            />
+
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </main>
       </div>
     </ConfigProvider>

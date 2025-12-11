@@ -6,10 +6,11 @@
   "scripts": {
     "preview": "vite preview",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc --noEmit && vite build",
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
-    "format:all": "npm run format && npm run lint"
+    "type-check": "tsc --noEmit",
+    "format:all": "npm run format && npm run lint && npm run type-check"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
@@ -21,7 +22,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-i18next": "^16.4.1",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^7.10.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

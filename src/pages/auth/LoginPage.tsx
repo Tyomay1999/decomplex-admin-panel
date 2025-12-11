@@ -2,9 +2,11 @@ import React from "react";
 import { Card, Form, Input, Button, Checkbox, Typography, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { useNavigate, useLocation } from "react-router-dom";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { SerializedError } from "@reduxjs/toolkit";
 import { useLoginMutation } from "../../services/authApi";
+import { getOrCreateFingerprint } from "../../services/authHelpers";
 
 const { Title, Text } = Typography;
 
@@ -14,34 +16,58 @@ interface LoginFormValues {
   remember?: boolean;
 }
 
+interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}
+
 export const LoginPage: React.FC = () => {
   const [form] = Form.useForm<LoginFormValues>();
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [login, { isLoading }] = useLoginMutation();
 
   const handleFinish = async (values: LoginFormValues) => {
     try {
+      const fingerprint = getOrCreateFingerprint();
+      const language = i18n.language;
+      const rememberUser = Boolean(values.remember);
+
       const result = await login({
         email: values.email,
         password: values.password,
+        fingerprint,
+        language,
+        rememberUser,
       }).unwrap();
 
       console.log("Login response:", result);
+
       message.success(t("messages.loginSuccess"));
-    } catch (error: FetchBaseQueryError | SerializedError) {
+
+      const state = location.state as LocationState | null;
+      const from = state?.from?.pathname ?? "/";
+      navigate(from, { replace: true });
+    } catch (error) {
+      const err = error as FetchBaseQueryError | SerializedError;
       let errMessage = t("messages.loginError");
 
-      if ("data" in error && error.data) {
-        const backendMessage = (error.data as { message?: string })?.message;
-        if (backendMessage) errMessage = backendMessage;
+      if ("data" in err && err.data) {
+        const body = err.data as { message?: string };
+        if (body.message) {
+          errMessage = body.message;
+        }
       }
 
-      if ("error" in error && typeof error.error === "string") {
-        errMessage = error.error;
+      if ("error" in err && typeof err.error === "string") {
+        errMessage = err.error;
       }
 
       message.error(errMessage);
+      form.setFieldsValue({ password: "" });
     }
   };
 
@@ -80,7 +106,12 @@ export const LoginPage: React.FC = () => {
           <Form.Item
             label={t("auth.passwordLabel")}
             name="password"
-            rules={[{ required: true, message: t("validation.passwordRequired") }]}
+            rules={[
+              {
+                required: true,
+                message: t("validation.passwordRequired"),
+              },
+            ]}
           >
             <Input.Password
               size="large"
