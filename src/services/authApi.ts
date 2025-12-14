@@ -1,39 +1,84 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { LoginPayload, LoginResponseData } from "./authHelpers";
-import type { RootState } from "../store";
-import i18n from "../i18n";
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import type { RootState } from "@/store";
+import i18n from "@/i18n";
+import { setCredentials, localLogout } from "@/features/auth/authSlice";
 import {
   getAccessTokenFromCookie,
   getOrCreateFingerprint,
-  getRefreshTokenFromCookie,
-  setAuthCookies,
+  setAccessTokenCookie,
+  saveServerFingerprint,
 } from "./authHelpers";
-import { setCredentials, logout } from "../features/auth/authSlice";
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
-interface ApiSuccessResponse<T> {
+// ENV
+const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
+const API_PREFIX: string = import.meta.env.VITE_API_PREFIX ?? "/api";
+
+export interface ApiSuccessResponse<T> {
   success: boolean;
   data: T;
 }
 
+export interface RegisterCompanyUserPayload {
+  email: string;
+  password: string;
+  role: CompanyUserRole;
+  position?: string;
+  language: LocaleCode;
+}
+
+export interface RegisterCompanyUserResponseData {
+  id: string;
+  email: string;
+  role: CompanyUserRole;
+  position: string | null;
+  language: LocaleCode;
+  companyId: string;
+}
+
+type Role = "admin" | "company_manager" | "user";
+
+type CompanyDto = {
+  id: string;
+  name: string;
+};
+
+export type UserDto = {
+  id: string;
+  email: string;
+  name?: string | null;
+  role: Role;
+  company?: CompanyDto | null;
+};
+
+export type LoginPayload = {
+  email: string;
+  password: string;
+  language: string;
+  rememberUser: boolean;
+};
+
+export type LoginResponseData = {
+  accessToken: string;
+  user: UserDto;
+  fingerprintHash?: string;
+};
+
+type RefreshResponseData = LoginResponseData;
+
+let refreshPromise: Promise<void> | null = null;
+
 const rawBaseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:4000/api",
+  baseUrl: `${API_BASE_URL}${API_PREFIX}`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const state = getState() as RootState;
     const token = state.auth.accessToken || getAccessTokenFromCookie();
 
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
+    if (token) headers.set("Authorization", `Bearer ${token}`);
 
-    const lang = i18n.language || "en";
-    headers.set("Accept-Language", lang);
-
-    const fingerprint = getOrCreateFingerprint();
-    headers.set("X-Client-Fingerprint", fingerprint);
-
-    headers.set("Content-Type", "application/json");
+    headers.set("Accept-Language", i18n.language || "en");
+    headers.set("X-Client-Fingerprint", getOrCreateFingerprint());
 
     return headers;
   },
@@ -46,40 +91,48 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 ) => {
   let result = await rawBaseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
-    const refreshToken = getRefreshTokenFromCookie();
+  if (result.error?.status === 401) {
+    if (!refreshPromise) {
+      refreshPromise = (async () => {
+        const refreshResult = await rawBaseQuery(
+          { url: "/auth/refresh", method: "POST" },
+          api,
+          extraOptions,
+        );
 
-    if (!refreshToken) {
-      api.dispatch(logout());
-      return result;
-    }
+        if (!refreshResult.data) {
+          throw new Error("Refresh failed: empty response");
+        }
 
-    const refreshResult = await rawBaseQuery(
-      {
-        url: "/auth/refresh",
-        method: "POST",
-        body: { refreshToken },
-      },
-      api,
-      extraOptions,
-    );
+        const payload = refreshResult.data as ApiSuccessResponse<RefreshResponseData>;
+        const { data } = payload;
 
-    if (refreshResult.data) {
-      const { data } = refreshResult.data as ApiSuccessResponse<LoginResponseData>;
+        if (!data?.accessToken) {
+          throw new Error("Refresh failed: no accessToken");
+        }
 
-      if (data?.accessToken && data?.refreshToken) {
-        setAuthCookies(data.accessToken, data.refreshToken);
+        setAccessTokenCookie(data.accessToken);
+
+        if (data.fingerprintHash) {
+          saveServerFingerprint(data.fingerprintHash);
+        }
+
         api.dispatch(
           setCredentials({
             accessToken: data.accessToken,
             user: data.user,
           }),
         );
+      })().finally(() => {
+        refreshPromise = null;
+      });
+    }
 
-        result = await rawBaseQuery(args, api, extraOptions);
-      }
-    } else {
-      api.dispatch(logout());
+    try {
+      await refreshPromise;
+      result = await rawBaseQuery(args, api, extraOptions);
+    } catch {
+      api.dispatch(localLogout());
     }
   }
 
@@ -91,22 +144,28 @@ export const authApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponseData, LoginPayload>({
-      query: ({ email, password, fingerprint, language, rememberUser }) => ({
+      query: ({ email, password, language, rememberUser }) => ({
         url: "/auth/login",
         method: "POST",
         body: {
           email,
           password,
-          fingerprint,
           language,
           rememberUser,
+          fingerprint: getOrCreateFingerprint(),
         },
       }),
       transformResponse: (response: ApiSuccessResponse<LoginResponseData>) => response.data,
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
-          setAuthCookies(data.accessToken, data.refreshToken ?? "");
+
+          if (data.fingerprintHash) {
+            saveServerFingerprint(data.fingerprintHash);
+          }
+
+          setAccessTokenCookie(data.accessToken);
+
           dispatch(
             setCredentials({
               accessToken: data.accessToken,
@@ -114,11 +173,47 @@ export const authApi = createApi({
             }),
           );
         } catch {
-          // no-op: error is handled in the LoginPage component
+          // handled in UI
         }
       },
+    }),
+
+    current: builder.query<ApiSuccessResponse<{ user: UserDto }>, void>({
+      query: () => ({ url: "/auth/current", method: "GET" }),
+    }),
+
+    logout: builder.mutation<{ success: boolean } | void, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "PATCH",
+        body: { refreshToken: getOrCreateFingerprint() },
+      }),
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          await queryFulfilled;
+        } finally {
+          dispatch(localLogout());
+        }
+      },
+    }),
+    registerCompanyUser: builder.mutation<
+      RegisterCompanyUserResponseData,
+      RegisterCompanyUserPayload
+    >({
+      query: (body) => ({
+        url: "/auth/register/company-user",
+        method: "POST",
+        body,
+      }),
+      transformResponse: (response: ApiSuccessResponse<RegisterCompanyUserResponseData>) =>
+        response.data,
     }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const {
+  useLoginMutation,
+  useCurrentQuery,
+  useLogoutMutation,
+  useRegisterCompanyUserMutation,
+} = authApi;

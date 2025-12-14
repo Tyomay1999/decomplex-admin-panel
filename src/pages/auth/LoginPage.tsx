@@ -1,12 +1,12 @@
-import React from "react";
-import { Card, Form, Input, Button, Checkbox, Typography, message } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Card, Form, Input, Button, Checkbox, Typography, message } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { SerializedError } from "@reduxjs/toolkit";
-import { useLoginMutation } from "../../services/authApi";
-import { getOrCreateFingerprint } from "../../services/authHelpers";
+import { useLoginMutation } from "@/services/authApi";
+import { getOrCreateFingerprint } from "@/services/authHelpers";
 
 const { Title, Text } = Typography;
 

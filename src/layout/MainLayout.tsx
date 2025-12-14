@@ -1,6 +1,9 @@
-import React from "react";
-import { Layout, Menu, Typography, Avatar, Button, Space } from "antd";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
 import type { MenuProps } from "antd";
+import { Layout, Menu, Typography, Avatar, Button, Space, Grid, Drawer, Divider } from "antd";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -8,88 +11,182 @@ import {
   UserOutlined,
   TeamOutlined,
   CalendarOutlined,
+  LogoutOutlined,
+  ProfileOutlined,
+  SolutionOutlined,
 } from "@ant-design/icons";
-import { useNavigate, Routes, useLocation } from "react-router-dom";
-import { logout } from "../features/auth/authSlice";
-import { useDispatch } from "react-redux";
+import type { RootState } from "@/store";
+
+import { ProfilePage } from "../../pages/ProfilePage";
+import { useLogoutMutation } from "@/services/authApi";
+import { localLogout } from "@/features/auth/authSlice";
+import type { Role } from "@/services/authHelpers";
+import type { AppDispatch } from "@/store";
+import { UsersPage } from "@/pages/UsersPage";
 
 const { Header, Sider, Content } = Layout;
-const { Title } = Typography;
+const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const getMenuItems = (): MenuItem[] => [
-  {
-    key: "dashboard",
-    icon: <DashboardOutlined />,
-    label: "Dashboard",
-  },
-  {
-    key: "users",
-    icon: <UserOutlined />,
-    label: "Users",
-  },
-  {
-    key: "companies",
-    icon: <TeamOutlined />,
-    label: "Companies",
-  },
-  {
-    key: "events",
-    icon: <CalendarOutlined />,
-    label: "Events",
-  },
-];
+function normalizePathToKey(pathname: string): string {
+  if (pathname === "/" || pathname === "") return "dashboard";
+  return pathname.replace("/", "");
+}
 
 export const MainLayout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const screens = useBreakpoint();
+  const isMobile = !screens.md;
+
   const [collapsed, setCollapsed] = React.useState(false);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  const { t } = useTranslation();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+
+  const userName = user?.name || user?.email || t("common.user", "User");
+  const userRole: Role = user?.role ?? "user";
+  const userCompanyName = user?.company?.name ?? t("common.company", "Company");
+
+  const canSeeUsers = userRole === "admin" || userRole === "company_manager";
+  const canSeeCompanies = userRole === "admin";
+
+  const currentKey = normalizePathToKey(location.pathname || "/");
+
+  const [logoutServer] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutServer().unwrap();
+    } finally {
+      dispatch(localLogout());
+      navigate("/login", { replace: true });
+    }
+  };
 
   const handleMenuClick: MenuProps["onClick"] = (info) => {
-    if (info.key === "dashboard") {
-      navigate("/");
+    const key = info.key;
+
+    if (key === "logout") {
+      handleLogout();
       return;
     }
 
-    navigate(`/${info.key}`);
+    if (key === "dashboard") {
+      navigate("/");
+    } else {
+      navigate(`/${key}`);
+    }
+
+    if (isMobile) setDrawerOpen(false);
   };
 
-  const currentPath = location.pathname || "/";
-  const selectedKey = currentPath === "/" ? "dashboard" : currentPath.replace("/", "");
+  const menuItems: MenuItem[] = [
+    { key: "dashboard", icon: <DashboardOutlined />, label: t("nav.dashboard", "Dashboard") },
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login", { replace: true });
-  };
+    { key: "vacancies", icon: <SolutionOutlined />, label: t("nav.vacancies", "Vacancies") },
+
+    ...(canSeeUsers
+      ? [{ key: "users", icon: <UserOutlined />, label: t("nav.users", "Users") } as MenuItem]
+      : []),
+
+    ...(canSeeCompanies
+      ? [
+          {
+            key: "companies",
+            icon: <TeamOutlined />,
+            label: t("nav.companies", "Companies"),
+          } as MenuItem,
+        ]
+      : []),
+
+    { key: "events", icon: <CalendarOutlined />, label: t("nav.events", "Events") },
+
+    { type: "divider" } as MenuItem,
+
+    { key: "profile", icon: <ProfileOutlined />, label: t("nav.profile", "Profile") },
+
+    { key: "logout", icon: <LogoutOutlined />, label: t("nav.logout", "Logout") },
+  ];
+
+  const SidebarHeader = (
+    <div
+      style={{
+        height: 64,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: collapsed ? "center" : "flex-start",
+        paddingInline: collapsed ? 0 : 16,
+        color: "#fff",
+        fontWeight: 700,
+        fontSize: 16,
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {collapsed ? "D" : "Decomplex Admin"}
+    </div>
+  );
+
+  const UserBlock = (
+    <div style={{ padding: 16, display: "flex", gap: 12, alignItems: "center" }}>
+      <Avatar icon={<UserOutlined />} />
+      <div style={{ minWidth: 0 }}>
+        <Text strong style={{ display: "block" }}>
+          {userName}
+        </Text>
+        <Text type="secondary" style={{ fontSize: 12 }}>
+          {userCompanyName} • {String(userRole)}
+        </Text>
+      </div>
+    </div>
+  );
+
+  const SidebarContent = (
+    <div>
+      {SidebarHeader}
+      <div style={{ background: "rgba(255,255,255,0.04)" }}>
+        {collapsed && !isMobile ? null : UserBlock}
+      </div>
+      <Divider style={{ margin: 0, borderColor: "rgba(255,255,255,0.10)" }} />
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={[currentKey]}
+        items={menuItems}
+        onClick={handleMenuClick}
+      />
+    </div>
+  );
 
   return (
-    <Layout style={{ minHeight: "calc(100vh - 64px)" }}>
-      <Sider collapsible collapsed={collapsed} trigger={null} width={220}>
-        <div
-          style={{
-            height: 64,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: collapsed ? "center" : "flex-start",
-            paddingInline: collapsed ? 0 : 16,
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: 18,
-          }}
-        >
-          {collapsed ? "D" : "Decomplex Admin"}
-        </div>
+    <Layout style={{ minHeight: "100vh" }}>
+      {/* Desktop Sider */}
+      {!isMobile && (
+        <Sider collapsible collapsed={collapsed} trigger={null} width={240}>
+          {SidebarContent}
+        </Sider>
+      )}
 
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[selectedKey]}
-          items={getMenuItems()}
-          onClick={handleMenuClick}
-        />
-      </Sider>
+      {/* Mobile Drawer */}
+      {isMobile && (
+        <Drawer
+          open={drawerOpen}
+          placement="left"
+          onClose={() => setDrawerOpen(false)}
+          bodyStyle={{ padding: 0 }}
+          width={280}
+        >
+          <div style={{ height: "100%", background: "#001529" }}>{SidebarContent}</div>
+        </Drawer>
+      )}
 
       <Layout>
         <Header
@@ -99,43 +196,82 @@ export const MainLayout: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: 16,
+            gap: 12,
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
             <Button
               type="text"
-              onClick={() => setCollapsed((prev) => !prev)}
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => {
+                if (isMobile) setDrawerOpen(true);
+                else setCollapsed((prev) => !prev);
+              }}
+              icon={
+                isMobile ? (
+                  <MenuUnfoldOutlined />
+                ) : collapsed ? (
+                  <MenuUnfoldOutlined />
+                ) : (
+                  <MenuFoldOutlined />
+                )
+              }
             />
-            <Title level={4} style={{ margin: 0 }}>
-              Decomplex Admin Panel
+
+            <Title
+              level={4}
+              style={{
+                margin: 0,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {t("app.title", "Decomplex Admin Panel")}
             </Title>
           </div>
 
-          <Space size={16}>
+          <Space size={12}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Avatar icon={<UserOutlined />} />
-              <span>Admin User</span>
+              <Avatar size="small" icon={<UserOutlined />} />
+              <span
+                style={{
+                  maxWidth: 140,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {user?.email ?? t("common.user", "User")}
+              </span>
             </div>
-            <Button danger onClick={handleLogout}>
-              Logout
-            </Button>
           </Space>
         </Header>
 
         <Content
           style={{
-            margin: 16,
-            padding: 16,
+            margin: isMobile ? 12 : 16,
+            padding: isMobile ? 12 : 16,
             background: "#fff",
-            borderRadius: 8,
+            borderRadius: 12,
+            minHeight: 280,
           }}
         >
           <Routes>
-            {/*<Route index element={<DashboardPage />} />*/}
-            {/*<Route path="users" element={<UsersPage />} />*/}
-            {/*<Route path="*" element={<DashboardPage />} />*/}
+            {/* Dashboard (Home) */}
+            {/* <Route index element={<DashboardPage />} /> */}
+
+            {/* New pages */}
+            {/* <Route path="vacancies" element={<VacanciesPage />} /> */}
+            {/* <Route path="users" element={<UsersPage />} /> */}
+            {/* <Route path="companies" element={<CompaniesPage />} /> */}
+            {/* <Route path="events" element={<EventsPage />} /> */}
+            <Route path="users" element={<UsersPage />} />
+            <Route path="profile" element={<ProfilePage />} />
+
+            {/* <Route path="*" element={<DashboardPage />} /> */}
           </Routes>
         </Content>
       </Layout>

@@ -1,7 +1,7 @@
-import React from "react";
-import { ConfigProvider, theme as antdTheme } from "antd";
-import { Routes, Route } from "react-router-dom";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { Routes, Route } from "react-router-dom";
+import { ConfigProvider, theme as antdTheme } from "antd";
 
 import { TopBar } from "./components/layout/TopBar";
 import { LoginPage } from "./pages/auth/LoginPage";

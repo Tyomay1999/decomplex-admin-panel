@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { Space, Select, Switch, Typography } from "antd";
 import { GlobalOutlined, BulbOutlined } from "@ant-design/icons";
 

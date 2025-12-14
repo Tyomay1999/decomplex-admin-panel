@@ -1,9 +1,14 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+type AppEnv = "local" | "staging" | "prod";
 
-if (!apiBaseUrl) {
-  throw new Error("VITE_API_BASE_URL is not defined in environment variables");
+function requireString(name: keyof ImportMetaEnv): string {
+  const v = import.meta.env[name];
+  if (!v || typeof v !== "string") throw new Error(`Missing env: ${name}`);
+  return v;
 }
 
 export const env = {
-  apiBaseUrl,
-};
+  API_BASE_URL: requireString("VITE_API_BASE_URL"),
+  APP_ENV: requireString("VITE_APP_ENV") as AppEnv,
+  API_PREFIX: requireString("VITE_API_PREFIX"),
+  DEFAULT_LOCALE: requireString("VITE_DEFAULT_LOCALE"),
+} as const;
