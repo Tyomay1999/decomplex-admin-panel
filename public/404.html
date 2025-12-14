@@ -1,23 +1,13 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="0;url=/" />
     <script>
-        var repo = "decomplex-admin-panel";
-        var path = location.pathname;
-
-        // remove leading "/repo/"
-        if (path.indexOf("/" + repo + "/") === 0) {
-            path = path.slice(repo.length + 1);
-        }
-
-        var target =
-            "/" +
-            repo +
-            "/?p=" +
-            encodeURIComponent(path + location.search + location.hash);
-
-        location.replace(target);
+        // Redirect any 404 to SPA entry for custom domain (root)
+        var l = window.location;
+        var redirect = "/" + "?p=" + encodeURIComponent(l.pathname + l.search + l.hash);
+        l.replace(redirect);
     </script>
 </head>
 <body></body>

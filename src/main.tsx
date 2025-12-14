@@ -11,8 +11,20 @@ import "./i18n";
 // GitHub Pages SPA fallback: if we came from /404.html redirect
 const params = new URLSearchParams(window.location.search);
 const p = params.get("p");
+
 if (p) {
-    window.history.replaceState(null, "", p);
+    try {
+        const url = p.startsWith("http") ? new URL(p) : null;
+        const nextPath = url ? `${url.pathname}${url.search}${url.hash}` : p;
+
+        if (nextPath.startsWith("/")) {
+            window.history.replaceState(null, "", nextPath);
+        } else {
+            window.history.replaceState(null, "", "/");
+        }
+    } catch {
+        window.history.replaceState(null, "", "/");
+    }
 }
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
