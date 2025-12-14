@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "Decomplex Admin",
+    "description": "Մուտք գործեք ադմին վահանակ՝ հարթակը կառավարելու համար"
+  },
+  "auth": {
+    "loginTitle": "Մուտք համակարգ",
+    "emailLabel": "Էլ. հասցե",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Գաղտնաբառ",
+    "passwordPlaceholder": "Գրեք գաղտնաբառը",
+    "rememberMe": "Հիշել ինձ",
+    "loginButton": "Մուտք"
+  },
+  "validation": {
+    "emailRequired": "Գրեք էլ. հասցեն",
+    "emailInvalid": "Սխալ էլ. հասցե",
+    "passwordRequired": "Գրեք գաղտնաբառը"
+  },
+  "messages": {
+    "loginSuccess": "Մուտքը հաջողվեց (զագլուշկա). Հետո կմշակենք թոքենները։",
+    "loginError": "Մուտքի սխալ",
+    "unknownError": "Անհայտ սխալ"
+  },
+  "language": {
+    "label": "Լեզու",
+    "en": "English",
+    "ru": "Русский",
+    "hy": "Հայերեն"
+  },
+  "theme": {
+    "label": "Թեմա",
+    "light": "Լույս",
+    "dark": "Մութ"
+  }
+}

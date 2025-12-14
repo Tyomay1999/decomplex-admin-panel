@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <script>
+        var repo = "decomplex-admin-panel";
+        var path = location.pathname;
+
+        // remove leading "/repo/"
+        if (path.indexOf("/" + repo + "/") === 0) {
+            path = path.slice(repo.length + 1);
+        }
+
+        var target =
+            "/" +
+            repo +
+            "/?p=" +
+            encodeURIComponent(path + location.search + location.hash);
+
+        location.replace(target);
+    </script>
+</head>
+<body></body>
+</html>

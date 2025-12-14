@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "Decomplex Admin",
+    "description": "Войдите в админ-панель для управления платформой"
+  },
+  "auth": {
+    "loginTitle": "Вход в систему",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Пароль",
+    "passwordPlaceholder": "Введите пароль",
+    "rememberMe": "Запомнить меня",
+    "loginButton": "Войти"
+  },
+  "validation": {
+    "emailRequired": "Введите email",
+    "emailInvalid": "Некорректный формат email",
+    "passwordRequired": "Введите пароль"
+  },
+  "messages": {
+    "loginSuccess": "Успешный вход (заглушка). Далее обработаем токены.",
+    "loginError": "Произошла ошибка при входе",
+    "unknownError": "Неизвестная ошибка"
+  },
+  "language": {
+    "label": "Язык",
+    "en": "English",
+    "ru": "Русский",
+    "hy": "Հայերեն"
+  },
+  "theme": {
+    "label": "Тема",
+    "light": "Светлая",
+    "dark": "Тёмная"
+  }
+}
