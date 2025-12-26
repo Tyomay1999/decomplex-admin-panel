@@ -1,10 +1,11 @@
 import * as React from "react";
+import { FC } from "react";
 import { Card, Typography, Spin, Alert } from "antd";
 import { useCurrentQuery } from "@/services/authApi";
 
 const { Title, Text } = Typography;
 
-export const ProfilePage: React.FC = () => {
+export const ProfilePage: FC = () => {
   const { data, isLoading, isError, error } = useCurrentQuery();
 
   if (isLoading) {

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { clearAccessTokenCookie } from "@/services/authHelpers";
-import type { UserDto } from "@/services/authHelpers";
+import type { UserDto } from "@/types/auth";
 
 export type AuthStatus = "idle" | "checking" | "authenticated" | "anonymous";
 
@@ -46,8 +46,13 @@ const authSlice = createSlice({
       state.status = "anonymous";
       clearAccessTokenCookie();
     },
+    setUser(state, action: PayloadAction<UserDto | null>) {
+      state.user = action.payload;
+      state.status = action.payload ? "authenticated" : "anonymous";
+    },
   },
 });
 
-export const { setCredentials, localLogout, setChecking, setAnonymous } = authSlice.actions;
+export const { setUser, setCredentials, localLogout, setChecking, setAnonymous } =
+  authSlice.actions;
 export default authSlice.reducer;

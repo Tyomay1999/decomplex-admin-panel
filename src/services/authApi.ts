@@ -1,23 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import type { RootState } from "@/store";
-import i18n from "@/i18n";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQueryWithReauth } from "@/services/baseApi";
+import type { ApiSuccessResponse } from "@/services/baseApi";
+import { getOrCreateFingerprint, setAccessTokenCookie, saveServerFingerprint } from "./authHelpers";
 import { setCredentials, localLogout } from "@/features/auth/authSlice";
-import {
-  getAccessTokenFromCookie,
-  getOrCreateFingerprint,
-  setAccessTokenCookie,
-  saveServerFingerprint,
-} from "./authHelpers";
 
-// ENV
-const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL;
-const API_PREFIX: string = import.meta.env.VITE_API_PREFIX ?? "/api";
-
-export interface ApiSuccessResponse<T> {
-  success: boolean;
-  data: T;
-}
+import type {
+  UserDto,
+  Role,
+  CompanyUserRole,
+  LocaleCode,
+  CompanyDto,
+  UserType,
+} from "@/types/auth";
 
 export interface RegisterCompanyUserPayload {
   email: string;
@@ -26,6 +20,12 @@ export interface RegisterCompanyUserPayload {
   position?: string;
   language: LocaleCode;
 }
+
+export type MeResponseData = {
+  userType: UserType;
+  user: UserDto;
+  company?: CompanyDto;
+};
 
 export interface RegisterCompanyUserResponseData {
   id: string;
@@ -36,26 +36,12 @@ export interface RegisterCompanyUserResponseData {
   companyId: string;
 }
 
-type Role = "admin" | "company_manager" | "user";
-
-type CompanyDto = {
-  id: string;
-  name: string;
-};
-
-export type UserDto = {
-  id: string;
-  email: string;
-  name?: string | null;
-  role: Role;
-  company?: CompanyDto | null;
-};
-
 export type LoginPayload = {
   email: string;
   password: string;
   language: string;
   rememberUser: boolean;
+  fingerprint: string;
 };
 
 export type LoginResponseData = {
@@ -64,79 +50,8 @@ export type LoginResponseData = {
   fingerprintHash?: string;
 };
 
-type RefreshResponseData = LoginResponseData;
-
-let refreshPromise: Promise<void> | null = null;
-
-const rawBaseQuery = fetchBaseQuery({
-  baseUrl: `${API_BASE_URL}${API_PREFIX}`,
-  credentials: "include",
-  prepareHeaders: (headers, { getState }) => {
-    const state = getState() as RootState;
-    const token = state.auth.accessToken || getAccessTokenFromCookie();
-
-    if (token) headers.set("Authorization", `Bearer ${token}`);
-
-    headers.set("Accept-Language", i18n.language || "en");
-    headers.set("X-Client-Fingerprint", getOrCreateFingerprint());
-
-    return headers;
-  },
-});
-
-const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
-  args,
-  api,
-  extraOptions,
-) => {
-  let result = await rawBaseQuery(args, api, extraOptions);
-
-  if (result.error?.status === 401) {
-    if (!refreshPromise) {
-      refreshPromise = (async () => {
-        const refreshResult = await rawBaseQuery(
-          { url: "/auth/refresh", method: "POST" },
-          api,
-          extraOptions,
-        );
-
-        if (!refreshResult.data) {
-          throw new Error("Refresh failed: empty response");
-        }
-
-        const payload = refreshResult.data as ApiSuccessResponse<RefreshResponseData>;
-        const { data } = payload;
-
-        if (!data?.accessToken) {
-          throw new Error("Refresh failed: no accessToken");
-        }
-
-        setAccessTokenCookie(data.accessToken);
-
-        if (data.fingerprintHash) {
-          saveServerFingerprint(data.fingerprintHash);
-        }
-
-        api.dispatch(
-          setCredentials({
-            accessToken: data.accessToken,
-            user: data.user,
-          }),
-        );
-      })().finally(() => {
-        refreshPromise = null;
-      });
-    }
-
-    try {
-      await refreshPromise;
-      result = await rawBaseQuery(args, api, extraOptions);
-    } catch {
-      api.dispatch(localLogout());
-    }
-  }
-
-  return result;
+export type CurrentResponseData = {
+  user: UserDto;
 };
 
 export const authApi = createApi({
@@ -144,7 +59,7 @@ export const authApi = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponseData, LoginPayload>({
-      query: ({ email, password, language, rememberUser }) => ({
+      query: ({ email, password, language, rememberUser, fingerprint }) => ({
         url: "/auth/login",
         method: "POST",
         body: {
@@ -152,7 +67,7 @@ export const authApi = createApi({
           password,
           language,
           rememberUser,
-          fingerprint: getOrCreateFingerprint(),
+          fingerprint,
         },
       }),
       transformResponse: (response: ApiSuccessResponse<LoginResponseData>) => response.data,
@@ -160,9 +75,7 @@ export const authApi = createApi({
         try {
           const { data } = await queryFulfilled;
 
-          if (data.fingerprintHash) {
-            saveServerFingerprint(data.fingerprintHash);
-          }
+          if (data.fingerprintHash) saveServerFingerprint(data.fingerprintHash);
 
           setAccessTokenCookie(data.accessToken);
 
@@ -178,8 +91,9 @@ export const authApi = createApi({
       },
     }),
 
-    current: builder.query<ApiSuccessResponse<{ user: UserDto }>, void>({
+    current: builder.query<CurrentResponseData, void>({
       query: () => ({ url: "/auth/current", method: "GET" }),
+      transformResponse: (response: ApiSuccessResponse<CurrentResponseData>) => response.data,
     }),
 
     logout: builder.mutation<{ success: boolean } | void, void>({
@@ -196,6 +110,7 @@ export const authApi = createApi({
         }
       },
     }),
+
     registerCompanyUser: builder.mutation<
       RegisterCompanyUserResponseData,
       RegisterCompanyUserPayload
@@ -208,6 +123,10 @@ export const authApi = createApi({
       transformResponse: (response: ApiSuccessResponse<RegisterCompanyUserResponseData>) =>
         response.data,
     }),
+    me: builder.query<MeResponseData, void>({
+      query: () => ({ url: "/auth/me", method: "GET" }),
+      transformResponse: (response: ApiSuccessResponse<MeResponseData>) => response.data,
+    }),
   }),
 });
 
@@ -215,5 +134,8 @@ export const {
   useLoginMutation,
   useCurrentQuery,
   useLogoutMutation,
+  useMeQuery,
   useRegisterCompanyUserMutation,
 } = authApi;
+
+export type { Role, CompanyUserRole, LocaleCode };

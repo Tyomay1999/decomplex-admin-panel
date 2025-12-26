@@ -32,5 +32,66 @@
     "label": "Թեմա",
     "light": "Լույս",
     "dark": "Մութ"
+  },
+  "nav": {
+    "vacancies": "Թափուր աշխատատեղեր"
+  },
+  "vacancies": {
+    "vacancies": {
+      "title": "Թափուր աշխատատեղեր",
+      "create": "Ստեղծել թափուր աշխատատեղ",
+
+      "table": {
+        "title": "Վերնագիր",
+        "location": "Տեղակայություն",
+        "jobType": "Աշխատանքի տեսակ",
+        "salary": "Աշխատավարձ",
+        "status": "Կարգավիճակ",
+        "actions": "Գործողություններ"
+      },
+
+      "form": {
+        "title": "Վերնագիր",
+        "titlePlaceholder": "օր․ Senior Frontend Engineer",
+
+        "jobType": "Աշխատանքի տեսակ",
+        "jobTypePlaceholder": "Ընտրեք աշխատանքի տեսակը",
+
+        "salaryFrom": "Աշխատավարձ՝ սկսած",
+        "salaryTo": "Աշխատավարձ՝ մինչև",
+
+        "location": "Տեղակայություն",
+        "locationPlaceholder": "օր․ Երևան / Հեռավար",
+
+        "description": "Նկարագրություն",
+        "descriptionPlaceholder": "Թափուր աշխատատեղի համառոտ նկարագրություն"
+      },
+
+      "validation": {
+        "titleRequired": "Մուտքագրեք աշխատատեղի վերնագիրը",
+        "jobTypeRequired": "Ընտրեք աշխատանքի տեսակը"
+      },
+
+      "jobType": {
+        "remote": "Հեռավար",
+        "full_time": "Լիաժամկետ",
+        "hybrid": "Հիբրիդ",
+        "office": "Գրասենյակային"
+      },
+
+      "archive": {
+        "button": "Արխիվացնել",
+        "confirmTitle": "Արխիվացնե՞լ աշխատատեղը",
+        "confirmDesc": "Աշխատատեղը կտեղափոխվի արխիվ։",
+        "ok": "Արխիվացնել",
+        "cancel": "Չեղարկել"
+      },
+
+      "messages": {
+        "created": "Թափուր աշխատատեղը ստեղծված է",
+        "archived": "Թափուր աշխատատեղը արխիվացված է",
+        "actionError": "Գործողությունը չհաջողվեց"
+      }
+    }
   }
 }

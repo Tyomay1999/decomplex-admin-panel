@@ -1,12 +1,13 @@
 import * as React from "react";
+import { FC, ReactElement } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store";
 import { selectIsAuthenticated } from "@/features/auth/selectors";
 
-type Props = { children: React.ReactElement };
+type Props = { children: ReactElement };
 
-export const ProtectedRoute: React.FC<Props> = ({ children }) => {
+export const ProtectedRoute: FC<Props> = ({ children }) => {
   const location = useLocation();
   const isAuthed = useSelector((s: RootState) => selectIsAuthenticated(s));
 

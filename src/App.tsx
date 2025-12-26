@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FC, useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Routes, Route } from "react-router-dom";
 import { ConfigProvider, theme as antdTheme } from "antd";
@@ -11,8 +12,8 @@ import { PublicOnlyRoute } from "./routes/PublicOnlyRoute";
 
 type ThemeMode = "light" | "dark";
 
-const App: React.FC = () => {
-  const [themeMode, setThemeMode] = React.useState<ThemeMode>(() => {
+const App: FC = () => {
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
     if (typeof window === "undefined") return "light";
     const saved = window.localStorage.getItem("themeMode");
     return saved === "dark" || saved === "light" ? saved : "light";
@@ -20,7 +21,7 @@ const App: React.FC = () => {
 
   const { t, i18n } = useTranslation("common");
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window !== "undefined") {
       window.localStorage.setItem("themeMode", themeMode);
     }
@@ -29,7 +30,7 @@ const App: React.FC = () => {
 
   const isDark = themeMode === "dark";
 
-  const currentLanguage = React.useMemo(() => {
+  const currentLanguage = useMemo(() => {
     if (i18n.language.startsWith("ru")) return "ru";
     if (i18n.language.startsWith("hy")) return "hy";
     return "en";

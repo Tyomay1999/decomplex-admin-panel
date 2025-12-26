@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Card, Form, Input, Button, Checkbox, Typography, message } from "antd";
@@ -6,7 +7,6 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import type { SerializedError } from "@reduxjs/toolkit";
 import { useLoginMutation } from "@/services/authApi";
-import { getOrCreateFingerprint } from "@/services/authHelpers";
 
 const { Title, Text } = Typography;
 
@@ -22,7 +22,7 @@ interface LocationState {
   };
 }
 
-export const LoginPage: React.FC = () => {
+export const LoginPage: FC = () => {
   const [form] = Form.useForm<LoginFormValues>();
   const { t, i18n } = useTranslation("common");
   const navigate = useNavigate();
@@ -32,14 +32,12 @@ export const LoginPage: React.FC = () => {
 
   const handleFinish = async (values: LoginFormValues) => {
     try {
-      const fingerprint = getOrCreateFingerprint();
       const language = i18n.language;
       const rememberUser = Boolean(values.remember);
 
       const result = await login({
         email: values.email,
         password: values.password,
-        fingerprint,
         language,
         rememberUser,
       }).unwrap();

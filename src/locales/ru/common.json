@@ -32,5 +32,64 @@
     "label": "Тема",
     "light": "Светлая",
     "dark": "Тёмная"
+  },
+  "nav": {
+    "vacancies": "Вакансии"
+  },
+  "vacancies": {
+    "title": "Вакансии",
+    "create": "Создать вакансию",
+
+    "table": {
+      "title": "Название",
+      "location": "Локация",
+      "jobType": "Тип работы",
+      "salary": "Зарплата",
+      "status": "Статус",
+      "actions": "Действия"
+    },
+
+    "form": {
+      "title": "Название",
+      "titlePlaceholder": "например, Senior Frontend Engineer",
+
+      "jobType": "Тип работы",
+      "jobTypePlaceholder": "Выберите тип работы",
+
+      "salaryFrom": "Зарплата от",
+      "salaryTo": "Зарплата до",
+
+      "location": "Локация",
+      "locationPlaceholder": "например, Ереван / Удалённо",
+
+      "description": "Описание",
+      "descriptionPlaceholder": "Краткое описание вакансии"
+    },
+
+    "validation": {
+      "titleRequired": "Введите название вакансии",
+      "jobTypeRequired": "Выберите тип работы"
+    },
+
+    "jobType": {
+      "remote": "Удалённо",
+      "full_time": "Полная занятость",
+      "hybrid": "Гибрид",
+      "office": "Офис"
+    },
+
+    "archive": {
+      "button": "Архивировать",
+      "confirmTitle": "Архивировать вакансию?",
+      "confirmDesc": "Вакансия будет переведена в архив.",
+      "ok": "Архивировать",
+      "cancel": "Отмена"
+    },
+
+    "messages": {
+      "created": "Вакансия создана",
+      "archived": "Вакансия архивирована",
+      "actionError": "Не удалось выполнить действие"
+    }
   }
 }

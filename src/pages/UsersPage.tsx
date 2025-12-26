@@ -1,20 +1,21 @@
 import * as React from "react";
+import { FC, useState } from "react";
 import { Button, Input, Space, Typography, Select } from "antd";
 import { useRegisterCompanyUserMutation } from "@/services/authApi";
 import type { CompanyUserRole } from "@/services/authApi";
 
 const { Title, Text } = Typography;
 
-export const UsersPage: React.FC = () => {
+export const UsersPage: FC = () => {
   const [registerUser, { isLoading }] = useRegisterCompanyUserMutation();
 
-  const [email, setEmail] = React.useState("newuser@example.com");
-  const [password, setPassword] = React.useState("123456");
-  const [role, setRole] = React.useState<CompanyUserRole>("recruiter");
-  const [position, setPosition] = React.useState<string>("");
-  const [language, setLanguage] = React.useState<string>("en");
+  const [email, setEmail] = useState("newuser@example.com");
+  const [password, setPassword] = useState("123456");
+  const [role, setRole] = useState<CompanyUserRole>("recruiter");
+  const [position, setPosition] = useState<string>("");
+  const [language, setLanguage] = useState<string>("en");
 
-  const [resultText, setResultText] = React.useState<string>("");
+  const [resultText, setResultText] = useState<string>("");
 
   const onRegister = async () => {
     setResultText("");

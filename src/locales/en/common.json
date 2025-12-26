@@ -32,5 +32,50 @@
     "label": "Theme",
     "light": "Light",
     "dark": "Dark"
+  },
+  "nav": { "vacancies": "Vacancies" },
+  "vacancies": {
+    "table": {
+      "title": "Title",
+      "location": "Location",
+      "jobType": "Job type",
+      "salary": "Salary",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "e.g. Senior Frontend Engineer",
+      "jobType": "Job type",
+      "jobTypePlaceholder": "Select job type",
+      "salaryFrom": "Salary from",
+      "salaryTo": "Salary to",
+      "location": "Location",
+      "locationPlaceholder": "e.g. Yerevan / Remote",
+      "description": "Description",
+      "descriptionPlaceholder": "Short description"
+    },
+    "validation": {
+      "titleRequired": "Enter title",
+      "jobTypeRequired": "Select job type"
+    },
+    "jobType": {
+      "remote": "Remote",
+      "full_time": "Full-time",
+      "hybrid": "Hybrid",
+      "office": "Office"
+    },
+    "archive": {
+      "button": "Archive",
+      "confirmTitle": "Archive vacancy?",
+      "confirmDesc": "This will move vacancy to archived status.",
+      "ok": "Archive",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "created": "Vacancy created",
+      "archived": "Archived",
+      "actionError": "Action failed"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FC } from "react";
 import { Space, Select, Switch, Typography } from "antd";
 import { GlobalOutlined, BulbOutlined } from "@ant-design/icons";
 
@@ -12,7 +13,7 @@ type Props = {
   t: (key: string) => string;
 };
 
-export const TopBar: React.FC<Props> = ({
+export const TopBar: FC<Props> = ({
   currentLanguage,
   onChangeLanguage,
   isDark,

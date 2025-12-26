@@ -1,14 +1,13 @@
 <!doctype html>
 <html>
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta http-equiv="refresh" content="0;url=/" />
     <script>
-        // Redirect any 404 to SPA entry for custom domain (root)
-        var l = window.location;
-        var redirect = "/" + "?p=" + encodeURIComponent(l.pathname + l.search + l.hash);
-        l.replace(redirect);
+      var l = window.location;
+      var redirect = "/" + "?p=" + encodeURIComponent(l.pathname + l.search + l.hash);
+      l.replace(redirect);
     </script>
-</head>
-<body></body>
+  </head>
+  <body></body>
 </html>

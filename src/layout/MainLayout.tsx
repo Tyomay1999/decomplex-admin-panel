@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Routes, Route, useLocation } from "react-router-dom";
@@ -18,11 +19,13 @@ import {
 import type { RootState } from "@/store";
 
 import { ProfilePage } from "../../pages/ProfilePage";
+import { useMeQuery } from "@/services/authApi";
 import { useLogoutMutation } from "@/services/authApi";
-import { localLogout } from "@/features/auth/authSlice";
+import { setUser, localLogout } from "@/features/auth/authSlice";
 import type { Role } from "@/services/authHelpers";
 import type { AppDispatch } from "@/store";
 import { UsersPage } from "@/pages/UsersPage";
+import { VacanciesPage } from "@/pages/VacanciesPage";
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -35,7 +38,7 @@ function normalizePathToKey(pathname: string): string {
   return pathname.replace("/", "");
 }
 
-export const MainLayout: React.FC = () => {
+export const MainLayout: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
@@ -43,8 +46,28 @@ export const MainLayout: React.FC = () => {
   const screens = useBreakpoint();
   const isMobile = !screens.md;
 
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const { data: meData, isLoading: isMeLoading, isError: isMeError } = useMeQuery();
+
+  useEffect(() => {
+    if (!meData?.user) return;
+
+    const normalizedUser = {
+      ...meData.user,
+      company: meData.company ? { id: meData.company.id, name: meData.company.name } : null,
+    };
+
+    dispatch(setUser(normalizedUser));
+  }, [meData, dispatch]);
+
+  useEffect(() => {
+    if (isMeError) {
+      dispatch(localLogout());
+      navigate("/login", { replace: true });
+    }
+  }, [isMeError, dispatch, navigate]);
 
   const { t } = useTranslation();
 
@@ -166,16 +189,18 @@ export const MainLayout: React.FC = () => {
     </div>
   );
 
+  if (isMeLoading) {
+    return <div style={{ padding: 24 }}>Loading...</div>;
+  }
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {/* Desktop Sider */}
       {!isMobile && (
         <Sider collapsible collapsed={collapsed} trigger={null} width={240}>
           {SidebarContent}
         </Sider>
       )}
 
-      {/* Mobile Drawer */}
       {isMobile && (
         <Drawer
           open={drawerOpen}
@@ -260,18 +285,14 @@ export const MainLayout: React.FC = () => {
           }}
         >
           <Routes>
-            {/* Dashboard (Home) */}
-            {/* <Route index element={<DashboardPage />} /> */}
+            <Route index element={<ProfilePage />} />
 
-            {/* New pages */}
-            {/* <Route path="vacancies" element={<VacanciesPage />} /> */}
-            {/* <Route path="users" element={<UsersPage />} /> */}
             {/* <Route path="companies" element={<CompaniesPage />} /> */}
             {/* <Route path="events" element={<EventsPage />} /> */}
             <Route path="users" element={<UsersPage />} />
             <Route path="profile" element={<ProfilePage />} />
-
-            {/* <Route path="*" element={<DashboardPage />} /> */}
+            <Route path="vacancies" element={<VacanciesPage />} />
+            <Route path="*" element={<ProfilePage />} />
           </Routes>
         </Content>
       </Layout>

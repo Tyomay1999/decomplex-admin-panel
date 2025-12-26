@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
-    "format:all": "npm run format && npm run lint && npm run type-check"
+    "format:all": "npm run lint && npm run type-check && npm run format"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
