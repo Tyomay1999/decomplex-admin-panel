@@ -4,11 +4,13 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import { store } from "./store";
+import { hydrateAccessTokenFromUrl } from "./services/redirectToken";
 import "antd/dist/reset.css";
 import "./index.css";
 import "./i18n";
 
-// GitHub Pages SPA fallback: if we came from /404.html redirect
+hydrateAccessTokenFromUrl();
+
 const params = new URLSearchParams(window.location.search);
 const p = params.get("p");
 
