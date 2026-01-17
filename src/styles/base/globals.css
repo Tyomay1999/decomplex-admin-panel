@@ -1,0 +1,101 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+#root {
+  background: var(--bg);
+}
+
+:root {
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 16px;
+
+  --gap-1: 8px;
+  --gap-2: 12px;
+  --gap-3: 16px;
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+}
+
+html[data-theme="light"] {
+  --bg: #f5f6f8;
+  --bg-elev: #ffffff;
+  --bg-elev-2: #fbfcfe;
+
+  --text: rgba(15, 23, 42, 0.92);
+  --text-2: rgba(30, 41, 59, 0.78);
+  --muted: rgba(148, 163, 184, 0.45);
+
+  --border: rgba(148, 163, 184, 0.22);
+  --border-2: rgba(148, 163, 184, 0.16);
+
+  --accent: #1677ff;
+  --accent-2: rgba(22, 119, 255, 0.14);
+
+  --shadow-1: 0 10px 24px rgba(15, 23, 42, 0.08);
+  --shadow-2: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+html[data-theme="dark"] {
+  --bg: #050a13;
+  --bg-elev: #0a1222;
+  --bg-elev-2: #0e1a30;
+
+  --text: rgba(226, 232, 240, 0.92);
+  --text-2: rgba(148, 163, 184, 0.88);
+  --muted: rgba(148, 163, 184, 0.35);
+
+  --border: rgba(148, 163, 184, 0.14);
+  --border-2: rgba(148, 163, 184, 0.1);
+
+  --accent: #3b82f6;
+  --accent-2: rgba(59, 130, 246, 0.16);
+
+  --shadow-1: 0 14px 38px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 22px 60px rgba(0, 0, 0, 0.46);
+}
+
+html[data-theme="dark"] .ant-typography,
+html[data-theme="dark"] .ant-typography * {
+  color: var(--text);
+}
+
+html[data-theme="dark"] .ant-typography-secondary,
+html[data-theme="dark"] .ant-typography-secondary * {
+  color: var(--text-2);
+}
+
+html[data-theme="dark"] .ant-modal-confirm-title {
+  color: var(--text) !important;
+}
+html[data-theme="dark"] .ant-modal-confirm-content {
+  color: var(--text-2) !important;
+}
+
+html[data-theme="dark"] .ant-dropdown-menu-title-content {
+  color: var(--text) !important;
+}
+
+.ant-modal-confirm .ant-modal-content {
+  border: 0 !important;
+  background: var(--bg-elev) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-2) !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-body-wrapper {
+  background: transparent !important;
+}

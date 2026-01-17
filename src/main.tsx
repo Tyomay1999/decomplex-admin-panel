@@ -2,37 +2,48 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.tsx";
-import { store } from "./store";
+import { store } from "@/store";
+import App from "@/App";
+import { hydrateAccessTokenFromUrl } from "@/services";
 import "antd/dist/reset.css";
-import "./index.css";
-import "./i18n";
+import "@/index.css";
+import "@/i18n";
 
-// GitHub Pages SPA fallback: if we came from /404.html redirect
-const params = new URLSearchParams(window.location.search);
-const p = params.get("p");
+const normalizeRedirectParam = (value: string): string => {
+  try {
+    if (value.startsWith("/")) return value;
 
-if (p) {
-    try {
-        const url = p.startsWith("http") ? new URL(p) : null;
-        const nextPath = url ? `${url.pathname}${url.search}${url.hash}` : p;
+    const url = value.startsWith("http://") || value.startsWith("https://") ? new URL(value) : null;
+    if (!url) return "/";
 
-        if (nextPath.startsWith("/")) {
-            window.history.replaceState(null, "", nextPath);
-        } else {
-            window.history.replaceState(null, "", "/");
-        }
-    } catch {
-        window.history.replaceState(null, "", "/");
-    }
-}
+    const nextPath = `${url.pathname}${url.search}${url.hash}`;
+    return nextPath.startsWith("/") ? nextPath : "/";
+  } catch {
+    return "/";
+  }
+};
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                <App />
-            </BrowserRouter>
-        </Provider>
-    </React.StrictMode>,
+const applyRedirectFromQuery = (): void => {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("p");
+  if (!raw) return;
+
+  const nextPath = normalizeRedirectParam(raw);
+  window.history.replaceState(null, "", nextPath);
+};
+
+hydrateAccessTokenFromUrl();
+applyRedirectFromQuery();
+
+const rootEl = document.getElementById("root");
+if (!rootEl) throw new Error('Root element "#root" not found');
+
+ReactDOM.createRoot(rootEl).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>,
 );

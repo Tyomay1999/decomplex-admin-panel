@@ -1,0 +1,1 @@
+export { VacancyApplicationsPage } from "./VacancyApplicationsPage";

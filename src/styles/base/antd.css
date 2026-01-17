@@ -1,0 +1,27 @@
+.ant-card {
+  border-radius: var(--r-md) !important;
+}
+
+.ant-btn {
+  border-radius: 10px !important;
+}
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker {
+  border-radius: 10px !important;
+}
+
+.ant-table-container {
+  border-radius: var(--r-md) !important;
+  overflow: hidden;
+}
+
+.ant-dropdown .ant-dropdown-menu {
+  border-radius: 12px !important;
+}
+
+.ant-modal-content {
+  border-radius: 14px !important;
+}

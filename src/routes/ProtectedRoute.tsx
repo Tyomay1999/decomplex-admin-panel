@@ -1,16 +1,29 @@
-import * as React from "react";
+import { FC, ReactElement } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Spin } from "antd";
+import { useTranslation } from "react-i18next";
 import type { RootState } from "@/store";
-import { selectIsAuthenticated } from "@/features/auth/selectors";
 
-type Props = { children: React.ReactElement };
+type Props = { children: ReactElement };
 
-export const ProtectedRoute: React.FC<Props> = ({ children }) => {
+export const ProtectedRoute: FC<Props> = ({ children }) => {
+  const { t } = useTranslation("common");
   const location = useLocation();
-  const isAuthed = useSelector((s: RootState) => selectIsAuthenticated(s));
+  const status = useSelector((s: RootState) => s.auth.status);
 
-  if (!isAuthed) {
+  if (status === "idle" || status === "checking") {
+    return (
+      <div className="route-loader">
+        <div className="route-loaderCard">
+          <Spin size="large" />
+          <div className="route-loaderText">{t("common.loading", { defaultValue: "Loading" })}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "anonymous") {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

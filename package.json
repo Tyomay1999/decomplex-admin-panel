@@ -7,10 +7,12 @@
     "preview": "vite preview",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit",
-    "format:all": "npm run format && npm run lint && npm run type-check"
+    "check": "npm run lint && npm run typecheck",
+    "fix": "npm run lint:fix && npm run format"
   },
   "dependencies": {
     "@ant-design/icons": "^6.1.0",

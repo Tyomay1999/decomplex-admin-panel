@@ -1,0 +1,235 @@
+.ant-layout-sider,
+.ant-drawer-body {
+  background: var(--bg-elev) !important;
+  border-right: 1px solid var(--border-2) !important;
+}
+
+.ant-card {
+  background: var(--bg-elev) !important;
+  border-color: var(--border) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: none !important;
+}
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker {
+  background: var(--bg-elev-2) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 8px !important;
+}
+
+.ant-input > input {
+  border-radius: 0 !important;
+}
+
+.ant-input::placeholder,
+.ant-input-affix-wrapper input::placeholder {
+  color: var(--muted) !important;
+}
+
+.ant-select-selection-placeholder {
+  color: var(--muted) !important;
+}
+
+.ant-select-arrow {
+  color: color-mix(in srgb, var(--text-2) 90%, transparent) !important;
+}
+
+.ant-select-selector:hover,
+.ant-input:hover,
+.ant-input-affix-wrapper:hover,
+.ant-picker:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border)) !important;
+}
+
+.ant-input:focus,
+.ant-input:focus-visible,
+.ant-input-affix-wrapper-focused,
+.ant-select-focused .ant-select-selector,
+.ant-picker-focused {
+  outline: none !important;
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border)) !important;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+}
+
+.ant-input-prefix,
+.ant-input-suffix,
+.ant-input-clear-icon {
+  color: color-mix(in srgb, var(--text-2) 90%, transparent) !important;
+}
+
+.ant-table {
+  background: transparent !important;
+}
+
+.ant-table-container {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r-md) !important;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background: color-mix(in srgb, var(--bg-elev-2) 88%, transparent) !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.ant-table-tbody > tr > td {
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border-2) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--accent-2) !important;
+}
+
+.ant-btn {
+  border-radius: 10px !important;
+}
+
+.ant-btn-default {
+  background: transparent !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+.ant-btn-default:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border)) !important;
+}
+
+.ant-btn-primary {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent) 22%, transparent) !important;
+}
+
+.ant-btn-primary:hover {
+  background: color-mix(in srgb, var(--accent) 88%, white) !important;
+  border-color: color-mix(in srgb, var(--accent) 88%, white) !important;
+}
+
+.ant-dropdown .ant-dropdown-menu,
+.ant-dropdown-menu-sub {
+  background: var(--bg-elev) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  padding: 6px !important;
+}
+
+.ant-dropdown .ant-dropdown-menu-item,
+.ant-dropdown .ant-dropdown-menu-submenu-title,
+.ant-dropdown .ant-dropdown-menu-title-content {
+  color: var(--text) !important;
+  border-radius: 10px !important;
+}
+
+.ant-dropdown .ant-dropdown-menu-item:hover,
+.ant-dropdown .ant-dropdown-menu-submenu-title:hover {
+  background: var(--accent-2) !important;
+}
+
+.ant-dropdown .ant-dropdown-menu-item-disabled,
+.ant-dropdown .ant-dropdown-menu-submenu-title.ant-dropdown-menu-item-disabled {
+  color: color-mix(in srgb, var(--text-2) 60%, transparent) !important;
+}
+
+html[data-theme="dark"] .ant-modal-mask {
+  background: rgba(0, 0, 0, 0.55) !important;
+}
+
+.ant-modal-content {
+  background: var(--bg-elev) !important;
+  color: var(--text) !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-2) !important;
+}
+
+.ant-modal-confirm-body {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.ant-modal-confirm .ant-modal-body {
+  padding: 16px !important;
+}
+
+.ant-modal-title,
+.ant-modal-confirm-title {
+  color: var(--text) !important;
+}
+
+.ant-modal-body,
+.ant-modal-confirm-content {
+  color: var(--text-2) !important;
+}
+
+.ant-modal-confirm-btns {
+  margin-top: 14px !important;
+}
+
+.ant-modal-confirm-btns .ant-btn-default {
+  background: color-mix(in srgb, var(--bg-elev-2) 70%, transparent) !important;
+  border-color: var(--border) !important;
+}
+
+.ant-descriptions-item-label {
+  color: color-mix(in srgb, var(--text-2) 92%, transparent) !important;
+}
+
+.ant-descriptions-item-content {
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .ant-form-item-label > label {
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .ant-form-item-extra,
+html[data-theme="dark"] .ant-form-item-explain,
+html[data-theme="dark"] .ant-form-item-explain-error {
+  color: var(--text-2) !important;
+}
+
+html[data-theme="dark"] .ant-select-selection-item {
+  color: var(--text) !important;
+}
+
+html[data-theme="dark"] .ant-select-disabled .ant-select-selection-item,
+html[data-theme="dark"] .ant-input[disabled],
+html[data-theme="dark"] .ant-input-affix-wrapper-disabled {
+  color: color-mix(in srgb, var(--text-2) 70%, transparent) !important;
+}
+
+html[data-theme="dark"] .ant-empty-description {
+  color: var(--text-2) !important;
+}
+
+html[data-theme="dark"] .ant-empty-img-default-ellipse,
+html[data-theme="dark"] .ant-empty-img-default-path-1,
+html[data-theme="dark"] .ant-empty-img-default-path-2,
+html[data-theme="dark"] .ant-empty-img-default-path-3,
+html[data-theme="dark"] .ant-empty-img-default-path-4 {
+  fill: color-mix(in srgb, var(--text-2) 22%, transparent) !important;
+}
+
+html.theme-ready .ant-layout,
+html.theme-ready .ant-card,
+html.theme-ready .ant-input,
+html.theme-ready .ant-input-affix-wrapper,
+html.theme-ready .ant-select-selector,
+html.theme-ready .ant-dropdown-menu,
+html.theme-ready .ant-modal-content {
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+html:not(.theme-ready) * {
+  transition: none !important;
+}

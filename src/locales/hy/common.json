@@ -1,12 +1,44 @@
 {
   "app": {
     "name": "Decomplex Admin",
-    "description": "Մուտք գործեք ադմին վահանակ՝ հարթակը կառավարելու համար"
+    "description": "Մուտք գործեք ադմին վահանակ՝ հարթակը կառավարելու համար",
+    "brandShort": "D",
+    "brandFull": "Decomplex",
+    "title": "Decomplex Admin Panel",
+    "sidebarHeaderLabel": "Հավելված"
+  },
+  "nav": {
+    "dashboard": "Վահանակ",
+    "vacancies": "Աշխատատեղեր",
+    "users": "Օգտատերեր",
+    "companies": "Ընկերություններ",
+    "events": "Միջոցառումներ",
+    "profile": "Պրոֆիլ",
+    "logout": "Դուրս գալ",
+    "toggleMenu": "Բացել մենյուն"
+  },
+  "profile": {
+    "title": "Պրոֆիլ",
+    "accountDetails": {
+      "title": "Հաշվի տվյալներ",
+      "labels": {
+        "userId": "Օգտատիրոջ ID",
+        "companyId": "Ընկերության ID",
+        "language": "Լեզու",
+        "position": "Պաշտոն",
+        "company": "Ընկերություն",
+        "defaultLocale": "Լռելյայն տեղայնացում",
+        "companyStatus": "Ընկերության կարգավիճակ"
+      }
+    }
   },
   "auth": {
+    "checking": "Սեսիան ստուգվում է…",
     "loginTitle": "Մուտք համակարգ",
     "emailLabel": "Էլ. հասցե",
     "emailPlaceholder": "you@example.com",
+    "logoutConfirmTitle": "Դուրս գալ համակարգից՞",
+    "logoutConfirmText": "Դուք դուրս կգաք ադմինիստրատիվ վահանակից։",
     "passwordLabel": "Գաղտնաբառ",
     "passwordPlaceholder": "Գրեք գաղտնաբառը",
     "rememberMe": "Հիշել ինձ",
@@ -22,6 +54,40 @@
     "loginError": "Մուտքի սխալ",
     "unknownError": "Անհայտ սխալ"
   },
+  "dashboard": {
+    "title": "Վահանակ",
+    "subtitle": "Վահանակի բաժինը դեռ իրականացված չէ։ Այստեղ կցուցադրվեն վիճակագրությունն ու համակարգի ընդհանուր պատկերը։",
+    "actions": {
+      "goToVacancies": "Անցնել թափուր աշխատատեղերին",
+      "goToUsers": "Կառավարել օգտատերերին"
+    }
+  },
+  "events": {
+    "title": "Միջոցառումներ",
+    "subtitle": "Այս բաժինը դեռ չի իրականացվել։ Կավելացնենք՝ երբ բեքենդը պատրաստ լինի։",
+    "actions": {
+      "goToVacancies": "Անցնել թափուր աշխատատեղերին",
+      "goToProfile": "Բացել պրոֆիլը"
+    }
+  },
+  "common": {
+    "noData": "Տվյալներ չկան",
+    "user": "Օգտատեր",
+    "company": "Ընկերություն",
+    "search": "Որոնում",
+    "apply": "Կիրառել",
+    "view": "Դիտել",
+    "loadMore": "Բեռնել ավելին",
+    "error": "Ինչ-որ բան սխալ գնաց։",
+    "failed": "Չստացվեց",
+    "logout": "Դուրս գալ",
+    "cancel": "Չեղարկել",
+    "result": "Արդյունք",
+    "back": "Հետ",
+    "create": "Ստեղծել",
+    "dash": "—",
+    "loading": "Բեռնվում է..."
+  },
   "language": {
     "label": "Լեզու",
     "en": "English",
@@ -32,5 +98,116 @@
     "label": "Թեմա",
     "light": "Լույս",
     "dark": "Մութ"
+  },
+  "users": {
+    "created": "Օգտատերը ստեղծվեց",
+    "result": "Ստեղծված է",
+    "subtitle": "Ստեղծեք ադմին կամ ռեկրուտեր օգտատերեր։ Ցանկը կավելացվի բեքենդի աջակցումից հետո։",
+    "table": {
+      "email": "Էլ․ փոստ",
+      "role": "Դեր",
+      "createdAt": "Ստեղծման ամսաթիվ"
+    },
+    "admins": {
+      "title": "Ադմիններ",
+      "subtitle": "Կմիացվի, երբ բեքենդում իրականացվի համապատասխան endpoint-ը։",
+      "placeholder": "Բեքենդը դեռ պատրաստ չէ։ Այս բաժինը ժամանակավոր է (placeholder)։",
+      "empty": "Դեռ տվյալներ չկան (բեքենդը չի իրականացվել)։"
+    },
+    "actions": {
+      "create": "Ստեղծել օգտատեր"
+    },
+    "fields": {
+      "email": "Էլ. հասցե",
+      "password": "Գաղտնաբառ",
+      "role": "Դեր",
+      "position": "Պաշտոն (ոչ պարտադիր)",
+      "language": "Լեզու"
+    },
+    "placeholders": {
+      "position": "Owner, HR, Recruiter..."
+    },
+    "validation": {
+      "email": "Էլ. հասցեն պարտադիր է",
+      "password": "Գաղտնաբառը պարտադիր է"
+    },
+    "create": {
+      "subtitle": "Հրավիրեք ադմինիստրատորի կամ ռեկրուտերի ձեր ընկերության աշխատանքային տարածք։"
+    }
+  },
+  "vacancies": {
+    "applications": "Դիմումներ",
+    "create": "Նոր աշխատատեղ",
+    "createSuccess": "Աշխատատեղը ստեղծվեց",
+    "createHint": "Լրացրեք տվյալները և հրապարակեք աշխատատեղը։",
+    "createFailed": "Չհաջողվեց ստեղծել աշխատատեղ",
+    "noCompany": "Օգտատիրոջը ընկերություն կցված չէ։",
+    "empty": "Աշխատատեղեր չեն գտնվել։",
+    "filters": {
+      "status": "Կարգավիճակ",
+      "jobType": "Աշխատանքի տեսակ"
+    },
+    "status": {
+      "active": "Ակտիվ",
+      "archived": "Արխիվ"
+    },
+    "placeholders": {
+      "title": "օր.` Senior Frontend Engineer",
+      "location": "օր.` Երևան",
+      "jobType": "Ընտրեք աշխատանքի տեսակը",
+      "description": "Պարտականություններ, պահանջներ, պայմաններ և հավաքագրման գործընթաց։"
+    },
+    "jobType": {
+      "full_time": "Լրիվ դրույք",
+      "part_time": "Կես դրույք",
+      "remote": "Հեռավար",
+      "hybrid": "Հիբրիդ"
+    },
+    "table": {
+      "title": "Վերնագիր",
+      "location": "Վայր",
+      "status": "Կարգավիճակ",
+      "jobType": "Տեսակ",
+      "applications": "Դիմումներ",
+      "actions": "Գործողություններ"
+    },
+    "actions": {
+      "goToList": "Անցնել вакансիաներին"
+    },
+    "fields": {
+      "title": "Վերնագիր",
+      "location": "Վայր",
+      "jobType": "Աշխատանքի տեսակ",
+      "description": "Նկարագրություն"
+    },
+    "validation": {
+      "title": "Վերնագիրը պարտադիր է",
+      "jobType": "Աշխատանքի տեսակը պարտադիր է",
+      "description": "Նկարագրությունը պարտադիր է"
+    },
+    "details": {
+      "status": "Կարգավիճակ",
+      "jobType": "Աշխատանքի տեսակ",
+      "location": "Վայր",
+      "created": "Ստեղծվել է",
+      "notFound": "Վականսիան չի գտնվել",
+      "notFoundHint": "Հնարավոր է՝ վականսիան ջնջված է կամ դուք մուտք չունեք։"
+    }
+  },
+  "applications": {
+    "table": {
+      "candidate": "Թեկնածու",
+      "status": "Կարգավիճակ",
+      "appliedAt": "Դիմելու ամսաթիվ"
+    }
+  },
+  "table": {
+    "filter": {
+      "ok": "Լավ",
+      "reset": "Մաքրել",
+      "empty": "Ֆիլտրեր չկան",
+      "checkAll": "Ընտրել բոլորը",
+      "search": "Որոնում"
+    }
   }
 }

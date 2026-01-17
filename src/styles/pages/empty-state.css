@@ -1,0 +1,45 @@
+.emptyStateWrap {
+  width: 100%;
+  min-height: 55vh;
+  display: grid;
+  place-items: center;
+}
+
+.emptyStateCard {
+  width: 100%;
+  max-width: 520px;
+  border-radius: 16px;
+  padding: 22px;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.emptyStateIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.emptyStateTitle {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.emptyStateSubtitle {
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+
+.emptyStateActions {
+  margin-top: 6px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
