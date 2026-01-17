@@ -31,6 +31,10 @@ export type GetVacanciesResponse = {
   nextCursor: string | null;
 };
 
+export type GetVacancyByIdResponse = {
+  vacancy: VacancyDto;
+};
+
 export type CreateVacancyPayload = {
   title: string;
   description: string;
@@ -84,7 +88,7 @@ export const vacanciesApi = createApi({
         url: `/vacancies/${id}`,
         method: "GET",
       }),
-      transformResponse: (res: ApiSuccessResponse<VacancyDto>) => res.data,
+      transformResponse: (res: ApiSuccessResponse<GetVacancyByIdResponse>) => res.data.vacancy,
     }),
 
     getVacancyApplications: builder.query<

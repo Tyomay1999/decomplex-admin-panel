@@ -2,39 +2,48 @@ import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import App from "./App.tsx";
-import { store } from "./store";
-import { hydrateAccessTokenFromUrl } from "./services/redirectToken";
+import { store } from "@/store";
+import App from "@/App";
+import { hydrateAccessTokenFromUrl } from "@/services";
 import "antd/dist/reset.css";
-import "./index.css";
-import "./i18n";
+import "@/index.css";
+import "@/i18n";
+
+const normalizeRedirectParam = (value: string): string => {
+  try {
+    if (value.startsWith("/")) return value;
+
+    const url = value.startsWith("http://") || value.startsWith("https://") ? new URL(value) : null;
+    if (!url) return "/";
+
+    const nextPath = `${url.pathname}${url.search}${url.hash}`;
+    return nextPath.startsWith("/") ? nextPath : "/";
+  } catch {
+    return "/";
+  }
+};
+
+const applyRedirectFromQuery = (): void => {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("p");
+  if (!raw) return;
+
+  const nextPath = normalizeRedirectParam(raw);
+  window.history.replaceState(null, "", nextPath);
+};
 
 hydrateAccessTokenFromUrl();
+applyRedirectFromQuery();
 
-const params = new URLSearchParams(window.location.search);
-const p = params.get("p");
+const rootEl = document.getElementById("root");
+if (!rootEl) throw new Error('Root element "#root" not found');
 
-if (p) {
-    try {
-        const url = p.startsWith("http") ? new URL(p) : null;
-        const nextPath = url ? `${url.pathname}${url.search}${url.hash}` : p;
-
-        if (nextPath.startsWith("/")) {
-            window.history.replaceState(null, "", nextPath);
-        } else {
-            window.history.replaceState(null, "", "/");
-        }
-    } catch {
-        window.history.replaceState(null, "", "/");
-    }
-}
-
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <BrowserRouter basename={import.meta.env.BASE_URL}>
-                <App />
-            </BrowserRouter>
-        </Provider>
-    </React.StrictMode>,
+ReactDOM.createRoot(rootEl).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>,
 );

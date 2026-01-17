@@ -13,11 +13,11 @@ export const store = configureStore({
     notifications: notificationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(
-          rtkQueryErrorMiddleware,
-          authApi.middleware,
-          vacanciesApi.middleware,
-      ),
+    getDefaultMiddleware().concat(
+      rtkQueryErrorMiddleware,
+      authApi.middleware,
+      vacanciesApi.middleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

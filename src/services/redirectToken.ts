@@ -1,4 +1,4 @@
-import { setAccessTokenCookie } from "@/services/authHelpers";
+import { setAccessTokenCookie } from "@/services";
 
 export const hydrateAccessTokenFromUrl = (): string | null => {
   if (typeof window === "undefined") return null;
@@ -7,7 +7,8 @@ export const hydrateAccessTokenFromUrl = (): string | null => {
 
   const queryToken = url.searchParams.get("accessToken");
 
-  const hashParams = new URLSearchParams(url.hash.replace(/^#/, ""));
+  const hashRaw = url.hash.startsWith("#") ? url.hash.slice(1) : url.hash;
+  const hashParams = new URLSearchParams(hashRaw);
   const hashToken = hashParams.get("accessToken");
 
   const token = queryToken || hashToken;
@@ -16,10 +17,13 @@ export const hydrateAccessTokenFromUrl = (): string | null => {
   setAccessTokenCookie(token);
 
   url.searchParams.delete("accessToken");
-  const clean = url.pathname + (url.searchParams.toString() ? `?${url.searchParams}` : "");
-  window.history.replaceState({}, "", clean);
+  hashParams.delete("accessToken");
 
-  if (url.hash) window.history.replaceState({}, "", clean);
+  const search = url.searchParams.toString();
+  const hash = hashParams.toString();
+
+  const clean = `${url.pathname}${search ? `?${search}` : ""}${hash ? `#${hash}` : ""}`;
+  window.history.replaceState({}, "", clean);
 
   return token;
 };

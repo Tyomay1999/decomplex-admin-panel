@@ -1,15 +1,188 @@
 {
   "app": {
     "name": "Decomplex Admin",
-    "description": "Войдите в админ-панель для управления платформой"
+    "description": "Войдите в админ-панель для управления платформой",
+    "brandShort": "D",
+    "brandFull": "Decomplex",
+    "title": "Decomplex Admin Panel",
+    "sidebarHeaderLabel": "Приложение"
+  },
+  "nav": {
+    "dashboard": "Дашборд",
+    "vacancies": "Вакансии",
+    "users": "Пользователи",
+    "companies": "Компании",
+    "events": "События",
+    "profile": "Профиль",
+    "logout": "Выйти",
+    "toggleMenu": "Открыть меню"
+  },
+  "profile": {
+    "title": "Профиль",
+    "accountDetails": {
+      "title": "Детали аккаунта",
+      "labels": {
+        "userId": "ID пользователя",
+        "companyId": "ID компании",
+        "language": "Язык",
+        "position": "Должность",
+        "company": "Компания",
+        "defaultLocale": "Локаль по умолчанию",
+        "companyStatus": "Статус компании"
+      }
+    }
+  },
+  "events": {
+    "title": "События",
+    "subtitle": "Этот раздел пока не реализован. Добавим после поддержки со стороны бэкенда.",
+    "actions": {
+      "goToVacancies": "Перейти к вакансиям",
+      "goToProfile": "Открыть профиль"
+    }
+  },
+  "dashboard": {
+    "title": "Дашборд",
+    "subtitle": "Раздел дашборда пока не реализован. Здесь будет отображаться аналитика и обзор системы.",
+    "actions": {
+      "goToVacancies": "Перейти к вакансиям",
+      "goToUsers": "Управление пользователями"
+    }
+  },
+  "common": {
+    "noData": "Нет данных",
+    "user": "Пользователь",
+    "company": "Компания",
+    "search": "Поиск",
+    "apply": "Применить",
+    "view": "Открыть",
+    "loadMore": "Загрузить ещё",
+    "error": "Что-то пошло не так.",
+    "failed": "Не удалось",
+    "result": "Результат",
+    "logout": "Выйти",
+    "cancel": "Отмена",
+    "back": "Назад",
+    "create": "Создать",
+    "dash": "—",
+    "loading": "Загрузка..."
+  },
+  "language": {
+    "label": "Язык",
+    "en": "English",
+    "ru": "Русский",
+    "hy": "Հայերեն"
+  },
+  "theme": {
+    "label": "Тема",
+    "light": "Светлая",
+    "dark": "Тёмная"
+  },
+  "users": {
+    "created": "Пользователь создан",
+    "result": "Создано",
+    "subtitle": "Создавайте пользователей с ролями админа или рекрутера. Список появится после поддержки со стороны бэкенда.",
+    "table": {
+      "email": "Email",
+      "role": "Роль",
+      "createdAt": "Дата создания"
+    },
+    "admins": {
+      "title": "Админы",
+      "subtitle": "Будет подключено после того, как будет реализован endpoint в бэкенде.",
+      "placeholder": "Бэкенд ещё не готов. Этот блок пока является заглушкой.",
+      "empty": "Пока нет данных (бэкенд не реализован)."
+    },
+    "actions": {
+      "create": "Создать пользователя"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Пароль",
+      "role": "Роль",
+      "position": "Должность (необязательно)",
+      "language": "Язык"
+    },
+    "placeholders": {
+      "position": "Owner, HR, Recruiter..."
+    },
+    "validation": {
+      "email": "Email обязателен",
+      "password": "Пароль обязателен"
+    },
+
+    "create": {
+      "subtitle": "Пригласите администратора или рекрутера в рабочее пространство вашей компании."
+    }
+  },
+  "vacancies": {
+    "applications": "Отклики",
+    "create": "Создать вакансию",
+    "createHint": "Заполните данные и опубликуйте вакансию.",
+    "createSuccess": "Вакансия создана",
+    "createFailed": "Не удалось создать вакансию",
+    "noCompany": "К пользователю не привязана компания.",
+    "empty": "Вакансии не найдены.",
+    "filters": {
+      "status": "Статус",
+      "jobType": "Тип занятости"
+    },
+    "status": {
+      "active": "Активная",
+      "archived": "Архив"
+    },
+    "jobType": {
+      "full_time": "Полная занятость",
+      "part_time": "Частичная занятость",
+      "remote": "Удалённо",
+      "hybrid": "Гибрид"
+    },
+    "placeholders": {
+      "title": "например: Senior Frontend Engineer",
+      "location": "например: Ереван",
+      "jobType": "Выберите тип занятости",
+      "description": "Обязанности, требования, условия и процесс найма."
+    },
+    "table": {
+      "title": "Название",
+      "location": "Локация",
+      "status": "Статус",
+      "jobType": "Тип",
+      "applications": "Отклики",
+      "actions": "Действия"
+    },
+    "actions": {
+      "goToList": "Перейти к вакансиям"
+    },
+    "fields": {
+      "title": "Название",
+      "location": "Локация",
+      "jobType": "Тип занятости",
+      "description": "Описание"
+    },
+    "validation": {
+      "title": "Название обязательно",
+      "jobType": "Тип занятости обязателен",
+      "description": "Описание обязательно"
+    },
+    "details": {
+      "status": "Статус",
+      "jobType": "Тип занятости",
+      "location": "Локация",
+      "created": "Создано",
+      "notFound": "Вакансия не найдена",
+      "notFoundHint": "Возможно, вакансия была удалена или у вас нет доступа."
+    }
   },
   "auth": {
+    "checking": "Проверка сессии…",
     "loginTitle": "Вход в систему",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Пароль",
     "passwordPlaceholder": "Введите пароль",
     "rememberMe": "Запомнить меня",
+    "logoutConfirmTitle": "Выйти из системы?",
+    "logoutConfirmText": "Вы будете выведены из административной панели.",
     "loginButton": "Войти"
   },
   "validation": {
@@ -22,15 +195,20 @@
     "loginError": "Произошла ошибка при входе",
     "unknownError": "Неизвестная ошибка"
   },
-  "language": {
-    "label": "Язык",
-    "en": "English",
-    "ru": "Русский",
-    "hy": "Հայերեն"
+  "applications": {
+    "table": {
+      "candidate": "Кандидат",
+      "status": "Статус",
+      "appliedAt": "Дата отклика"
+    }
   },
-  "theme": {
-    "label": "Тема",
-    "light": "Светлая",
-    "dark": "Тёмная"
+  "table": {
+    "filter": {
+      "ok": "ОК",
+      "reset": "Сбросить",
+      "empty": "Нет фильтров",
+      "checkAll": "Выбрать всё",
+      "search": "Поиск"
+    }
   }
 }

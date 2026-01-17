@@ -1,0 +1,1 @@
+export { CreateVacancyPage } from "./CreateVacancyPage";

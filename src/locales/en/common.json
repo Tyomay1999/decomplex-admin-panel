@@ -1,16 +1,49 @@
 {
   "app": {
+    "brandShort": "D",
+    "title": "Decomplex Admin Panel",
+    "sidebarHeaderLabel": "Application",
     "name": "Decomplex Admin",
-    "description": "Log in to the admin panel to manage the platform"
+    "description": "Log in to the admin panel to manage the platform",
+    "brandFull": "Decomplex"
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "vacancies": "Vacancies",
+    "users": "Users",
+    "companies": "Companies",
+    "events": "Events",
+    "profile": "Profile",
+    "logout": "Logout",
+    "toggleMenu": "Toggle menu"
+  },
+  "profile": {
+    "title": "Profile",
+    "accountDetails": {
+      "title": "Account details",
+      "labels": {
+        "userId": "User ID",
+        "companyId": "Company ID",
+        "language": "Language",
+        "position": "Position",
+        "company": "Company",
+        "defaultLocale": "Default locale",
+        "companyStatus": "Company status"
+      }
+    }
+  },
+
   "auth": {
+    "checking": "Checking session…",
     "loginTitle": "Sign In",
     "emailLabel": "Email",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
     "rememberMe": "Remember me",
-    "loginButton": "Sign in"
+    "loginButton": "Sign in",
+    "logoutConfirmTitle": "Log out?",
+    "logoutConfirmText": "You will be signed out of the admin panel."
   },
   "validation": {
     "emailRequired": "Please enter email",
@@ -22,6 +55,40 @@
     "loginError": "Login failed",
     "unknownError": "Unexpected error occurred"
   },
+  "events": {
+    "title": "Events",
+    "subtitle": "This section is not implemented yet. We’ll add it after backend support.",
+    "actions": {
+      "goToVacancies": "Go to vacancies",
+      "goToProfile": "Open profile"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "The dashboard is not ready yet. It will show analytics and system overview.",
+    "actions": {
+      "goToVacancies": "Go to vacancies",
+      "goToUsers": "Manage users"
+    }
+  },
+  "common": {
+    "noData": "No data",
+    "user": "User",
+    "company": "Company",
+    "search": "Search",
+    "apply": "Apply",
+    "view": "View",
+    "loadMore": "Load more",
+    "error": "Something went wrong.",
+    "failed": "Failed",
+    "result": "Result",
+    "back": "Back",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "dash": "—",
+    "loading": "Loading...",
+    "create": "Create"
+  },
   "language": {
     "label": "Language",
     "en": "English",
@@ -32,5 +99,120 @@
     "label": "Theme",
     "light": "Light",
     "dark": "Dark"
+  },
+  "users": {
+    "created": "User created",
+    "result": "Created",
+    "subtitle": "Create admin/recruiter users. Listing will be added after backend support.",
+    "table": {
+      "email": "Email",
+      "role": "Role",
+      "createdAt": "Created at"
+    },
+    "admins": {
+      "title": "Admins",
+      "subtitle": "Will be connected after backend endpoint is implemented.",
+      "placeholder": "Backend is not ready yet. This is a placeholder section.",
+      "empty": "No data yet (backend not implemented)."
+    },
+    "actions": {
+      "create": "Create user"
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "position": "Position (optional)",
+      "language": "Language"
+    },
+    "placeholders": {
+      "position": "Owner, HR, Recruiter..."
+    },
+    "validation": {
+      "email": "Email is required",
+      "password": "Password is required"
+    },
+    "create": {
+      "subtitle": "Invite an admin or recruiter to your company workspace."
+    }
+  },
+
+  "vacancies": {
+    "applications": "Applications",
+    "create": "Create vacancy",
+    "createSuccess": "Vacancy created",
+    "createFailed": "Failed to create vacancy",
+    "noCompany": "Company is not attached to this user.",
+    "empty": "No vacancies found.",
+
+    "createHint": "Fill in the details and publish the vacancy.",
+
+    "placeholders": {
+      "title": "e.g. Senior Frontend Engineer",
+      "location": "e.g. Yerevan",
+      "jobType": "Select job type",
+      "description": "Responsibilities, requirements, benefits, and hiring process."
+    },
+    "filters": {
+      "status": "Status",
+      "jobType": "Job type"
+    },
+    "status": {
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "actions": {
+      "goToList": "Go to vacancies"
+    },
+    "jobType": {
+      "full_time": "Full time",
+      "part_time": "Part time",
+      "remote": "Remote",
+      "hybrid": "Hybrid"
+    },
+    "table": {
+      "title": "Title",
+      "location": "Location",
+      "status": "Status",
+      "jobType": "Job type",
+      "applications": "Applications",
+      "actions": "Actions"
+    },
+    "fields": {
+      "title": "Title",
+      "location": "Location",
+      "jobType": "Job type",
+      "description": "Description"
+    },
+    "validation": {
+      "title": "Title is required",
+      "jobType": "Job type is required",
+      "description": "Description is required"
+    },
+    "details": {
+      "status": "Status",
+      "jobType": "Job type",
+      "location": "Location",
+      "created": "Created",
+      "notFound": "Vacancy not found",
+      "notFoundHint": "This vacancy may have been deleted or you may not have access."
+    }
+  },
+
+  "applications": {
+    "table": {
+      "candidate": "Candidate",
+      "status": "Status",
+      "appliedAt": "Applied at"
+    }
+  },
+  "table": {
+    "filter": {
+      "ok": "OK",
+      "reset": "Reset",
+      "empty": "No filters",
+      "checkAll": "Select all",
+      "search": "Search"
+    }
   }
 }
