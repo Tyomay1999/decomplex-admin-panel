@@ -108,7 +108,12 @@ export const CreateUserCard: FC<Props> = ({ isLoading, onSubmit }) => {
               },
             ]}
           >
-            <Input size="large" placeholder="email@example.com" autoComplete="email" />
+            <Input
+              size="large"
+              placeholder="email@example.com"
+              autoComplete="email"
+              data-testid="user-email"
+            />
           </Form.Item>
 
           <Form.Item
@@ -121,7 +126,12 @@ export const CreateUserCard: FC<Props> = ({ isLoading, onSubmit }) => {
               },
             ]}
           >
-            <Input.Password size="large" placeholder="••••••••" autoComplete="new-password" />
+            <Input.Password
+              size="large"
+              placeholder="••••••••"
+              autoComplete="new-password"
+              data-testid="user-password"
+            />
           </Form.Item>
 
           <Form.Item
@@ -159,6 +169,7 @@ export const CreateUserCard: FC<Props> = ({ isLoading, onSubmit }) => {
               loading={isLoading}
               block={isMobile}
               size="large"
+              data-testid="user-create-submit"
             >
               {t("users.actions.create", { defaultValue: "Create user" })}
             </Button>

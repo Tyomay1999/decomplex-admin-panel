@@ -44,7 +44,7 @@ export const TopBar: FC<TopBarProps> = ({
   const showBrand = isMobile;
 
   return (
-    <header className="topbar" role="banner">
+    <header className="topbar" role="banner" data-testid="topbar">
       <div className="topbar-inner">
         <div
           className="topbar-left"
@@ -67,7 +67,12 @@ export const TopBar: FC<TopBarProps> = ({
           style={{ display: "flex", alignItems: "center", gap: 10, marginRight: 15 }}
         >
           <Dropdown menu={menuProps} trigger={["click"]} placement="bottomRight" destroyOnHidden>
-            <Space size={8} style={{ cursor: "pointer" }} align="center">
+            <Space
+              size={8}
+              style={{ cursor: "pointer" }}
+              align="center"
+              data-testid="topbar-user-trigger"
+            >
               <Avatar
                 size="default"
                 src={user.avatarUrl ?? undefined}

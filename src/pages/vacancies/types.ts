@@ -1,4 +1,4 @@
-import type { JobType, VacancyStatus } from "@/services";
+import type { JobType, VacancyStatus } from "@/services/vacanciesApi";
 
 export type VacanciesNavState = {
   from?: string;

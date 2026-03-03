@@ -23,8 +23,18 @@ export const VacancyFilters: FC<VacancyFiltersProps> = ({
   }, [onApply]);
 
   return (
-    <Card styles={{ body: { padding: isMobile ? 12 : 16 } }} style={{ marginBottom: 12 }}>
-      <Flex vertical={isMobile} gap={12} align={isMobile ? "stretch" : "center"} wrap>
+    <Card
+      styles={{ body: { padding: isMobile ? 12 : 16 } }}
+      style={{ marginBottom: 12 }}
+      data-testid="vacancies-filters-card"
+    >
+      <Flex
+        vertical={isMobile}
+        gap={12}
+        align={isMobile ? "stretch" : "center"}
+        wrap
+        data-testid="vacancies-filters"
+      >
         <Input
           spellCheck={false}
           placeholder={t("common.search", { defaultValue: "Search" })}
@@ -32,6 +42,7 @@ export const VacancyFilters: FC<VacancyFiltersProps> = ({
           onChange={(e) => onChangeQ(e.target.value)}
           allowClear
           style={{ width: isMobile ? "100%" : 260 }}
+          data-testid="vacancies-filter-q"
         />
 
         <Select<VacancyStatus>
@@ -41,6 +52,7 @@ export const VacancyFilters: FC<VacancyFiltersProps> = ({
           onChange={(v) => onChangeStatus(v)}
           options={statusOptions}
           style={{ width: isMobile ? "100%" : 200 }}
+          data-testid="vacancies-filter-status"
         />
 
         <Select<JobType>
@@ -50,9 +62,12 @@ export const VacancyFilters: FC<VacancyFiltersProps> = ({
           onChange={(v) => onChangeJobType(v)}
           options={jobTypeOptions}
           style={{ width: isMobile ? "100%" : 220 }}
+          data-testid="vacancies-filter-jobType"
         />
 
-        <Button onClick={handleApply}>{t("common.apply", { defaultValue: "Apply" })}</Button>
+        <Button onClick={handleApply} data-testid="vacancies-filter-apply">
+          {t("common.apply", { defaultValue: "Apply" })}
+        </Button>
       </Flex>
     </Card>
   );

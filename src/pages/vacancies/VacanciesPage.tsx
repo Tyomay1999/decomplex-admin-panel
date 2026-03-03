@@ -115,20 +115,22 @@ export const VacanciesPage: FC = () => {
 
   if (h.authStatus === "idle" || h.authStatus === "checking") {
     return (
-      <div style={{ padding: 8 }}>{t("auth.checking", { defaultValue: "Checking session…" })}</div>
+      <div style={{ padding: 8 }} data-testid="vacancies-auth-checking">
+        {t("auth.checking", { defaultValue: "Checking session…" })}
+      </div>
     );
   }
 
   if (!h.userCompanyId) {
     return (
-      <div style={{ padding: 8 }}>
+      <div style={{ padding: 8 }} data-testid="vacancies-no-company">
         {t("vacancies.noCompany", { defaultValue: "Company is not attached to this user." })}
       </div>
     );
   }
 
   return (
-    <div>
+    <div data-testid="vacancies-page">
       <div
         style={{
           marginBottom: 12,
@@ -138,30 +140,40 @@ export const VacanciesPage: FC = () => {
           alignItems: "center",
         }}
       >
-        <Title level={4} style={{ margin: 0 }}>
+        <Title level={4} style={{ margin: 0 }} data-testid="vacancies-title">
           {t("nav.vacancies", { defaultValue: "Vacancies" })}
         </Title>
 
-        <Button type="primary" onClick={() => navigate("/vacancies/new")}>
+        <Button
+          type="primary"
+          onClick={() => navigate("/vacancies/new")}
+          data-testid="vacancies-create-open"
+        >
           {t("vacancies.create", { defaultValue: "Create vacancy" })}
         </Button>
       </div>
 
       {isMobile ? (
-        <VacancyFilters
-          isMobile
-          q={h.q}
-          status={h.status}
-          jobType={h.jobType}
-          statusOptions={statusOptions}
-          jobTypeOptions={jobTypeOptions}
-          onChangeQ={h.setQ}
-          onChangeStatus={h.setStatus}
-          onChangeJobType={h.setJobType}
-          onApply={h.applyFilters}
-        />
+        <div data-testid="vacancies-filters">
+          <VacancyFilters
+            isMobile
+            q={h.q}
+            status={h.status}
+            jobType={h.jobType}
+            statusOptions={statusOptions}
+            jobTypeOptions={jobTypeOptions}
+            onChangeQ={h.setQ}
+            onChangeStatus={h.setStatus}
+            onChangeJobType={h.setJobType}
+            onApply={h.applyFilters}
+          />
+        </div>
       ) : (
-        <Space style={{ width: "100%", marginBottom: 12 }} align="center">
+        <Space
+          style={{ width: "100%", marginBottom: 12 }}
+          align="center"
+          data-testid="vacancies-toolbar"
+        >
           <Input
             spellCheck={false}
             placeholder={t("common.search", { defaultValue: "Search" })}
@@ -169,22 +181,25 @@ export const VacanciesPage: FC = () => {
             onChange={(e) => h.setQ(e.target.value)}
             allowClear
             style={{ maxWidth: 420 }}
+            data-testid="vacancies-search"
           />
         </Space>
       )}
 
       {isMobile ? (
-        <VacancyMobileList
-          items={h.items}
-          isFetching={h.isFetching}
-          isError={h.isError}
-          hasMore={h.hasMore}
-          onView={goView}
-          onApplications={goApplications}
-          onLoadMore={h.loadMore}
-        />
+        <div data-testid="vacancies-list">
+          <VacancyMobileList
+            items={h.items}
+            isFetching={h.isFetching}
+            isError={h.isError}
+            hasMore={h.hasMore}
+            onView={goView}
+            onApplications={goApplications}
+            onLoadMore={h.loadMore}
+          />
+        </div>
       ) : (
-        <>
+        <div data-testid="vacancies-table">
           <VacancyTable
             items={h.items}
             isFetching={h.isFetching}
@@ -205,11 +220,16 @@ export const VacanciesPage: FC = () => {
           />
 
           <div style={{ marginTop: 12, display: "flex", justifyContent: "flex-end" }}>
-            <Button onClick={h.loadMore} disabled={!h.hasMore} loading={h.isFetching}>
+            <Button
+              onClick={h.loadMore}
+              disabled={!h.hasMore}
+              loading={h.isFetching}
+              data-testid="vacancies-load-more"
+            >
               {t("common.loadMore", { defaultValue: "Load more" })}
             </Button>
           </div>
-        </>
+        </div>
       )}
     </div>
   );

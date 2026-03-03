@@ -48,7 +48,7 @@ export const LoginPage: FC<LoginPageProps> = ({ isDark, onToggleTheme }) => {
   }, [isDark, onToggleTheme]);
 
   return (
-    <div className="login-page">
+    <div className="login-page" data-testid="login-page">
       <div className="login-controls">
         <div className="login-lang">
           <Space size={8}>
@@ -64,6 +64,7 @@ export const LoginPage: FC<LoginPageProps> = ({ isDark, onToggleTheme }) => {
               className="login-langSelect"
               popupMatchSelectWidth={false}
               variant="filled"
+              data-testid="login-lang-select"
             />
           </Space>
         </div>
@@ -82,13 +83,13 @@ export const LoginPage: FC<LoginPageProps> = ({ isDark, onToggleTheme }) => {
             aria-label={t("theme.label", { defaultValue: "Theme" })}
             icon={isDark ? <SunOutlined /> : <MoonOutlined />}
             onClick={handleToggleTheme}
+            data-testid="login-theme-btn"
           />
         </Tooltip>
       </div>
 
       <Card className="login-card" styles={{ body: { padding: 22, position: "relative" } }}>
         <LoginHeader title={t("auth.loginTitle")} description={t("app.description")} />
-
         <LoginForm form={h.form} isLoading={h.isLoading} onFinish={h.onFinish} t={t} />
       </Card>
     </div>

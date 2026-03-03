@@ -31,9 +31,14 @@ export const VacancyMobileList: FC<VacancyMobileListProps> = ({
   const { t } = useTranslation("common");
 
   return (
-    <Space orientation="vertical" size={10} style={{ width: "100%" }}>
+    <Space
+      orientation="vertical"
+      size={10}
+      style={{ width: "100%" }}
+      data-testid="vacancies-mobile-list"
+    >
       {items.length === 0 ? (
-        <Card styles={{ body: { padding: 12 } }}>
+        <Card styles={{ body: { padding: 12 } }} data-testid="vacancies-empty">
           <Empty
             description={
               isError
@@ -49,6 +54,7 @@ export const VacancyMobileList: FC<VacancyMobileListProps> = ({
             styles={{ body: { padding: 12 } }}
             title={<Text strong>{v.title}</Text>}
             extra={<Tag>{formatStatus(t, v.status)}</Tag>}
+            data-testid={`vacancies-card-${v.id}`}
           >
             <Descriptions size="small" column={1}>
               <Descriptions.Item
@@ -69,10 +75,14 @@ export const VacancyMobileList: FC<VacancyMobileListProps> = ({
             </Descriptions>
 
             <Flex gap={10} style={{ marginTop: 10 }}>
-              <Button block onClick={() => onView(v.id)}>
+              <Button block onClick={() => onView(v.id)} data-testid={`vacancy-view-${v.id}`}>
                 {t("common.view", { defaultValue: "View" })}
               </Button>
-              <Button block onClick={() => onApplications(v.id)}>
+              <Button
+                block
+                onClick={() => onApplications(v.id)}
+                data-testid={`vacancy-apps-${v.id}`}
+              >
                 {t("vacancies.applications", { defaultValue: "Applications" })}
               </Button>
             </Flex>
@@ -81,7 +91,13 @@ export const VacancyMobileList: FC<VacancyMobileListProps> = ({
       )}
 
       <Flex style={{ marginTop: 2 }}>
-        <Button onClick={onLoadMore} disabled={!hasMore} loading={isFetching} block>
+        <Button
+          onClick={onLoadMore}
+          disabled={!hasMore}
+          loading={isFetching}
+          block
+          data-testid="vacancies-load-more"
+        >
           {t("common.loadMore", { defaultValue: "Load more" })}
         </Button>
       </Flex>

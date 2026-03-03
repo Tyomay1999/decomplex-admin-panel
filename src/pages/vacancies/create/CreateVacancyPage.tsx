@@ -82,28 +82,23 @@ export const CreateVacancyPage: FC = () => {
           jobType: values.jobType,
         };
 
-        const data: { vacancy: VacancyDto } = await createVacancy(payload).unwrap();
-        const { vacancy } = data;
-        const id = typeof vacancy.id === "string" ? vacancy.id.trim() : "";
-        if (id.length === 0) {
-          // message.error(t("vacancies.createFailed", { defaultValue: "Failed to create vacancy" }));
-          return;
-        }
+        const vacancy: VacancyDto = await createVacancy(payload).unwrap();
 
-        // message.success(t("vacancies.createSuccess", { defaultValue: "Vacancy created" }));
+        const id = typeof vacancy.id === "string" ? vacancy.id.trim() : "";
+        if (id.length === 0) return;
 
         navigate(`/vacancies/${id}`, {
           state: { from: backTo } as VacanciesNavState,
         });
       } catch {
-        // message.error(t("vacancies.createFailed", { defaultValue: "Failed to create vacancy" }));
+        return;
       }
     },
-    [createVacancy, navigate, t, backTo],
+    [createVacancy, navigate, backTo],
   );
 
   return (
-    <div className="createVacancyPage">
+    <div className="createVacancyPage" data-testid="vacancy-create-page">
       <Space orientation="vertical" size={14} style={{ width: "100%" }}>
         <div className="createVacancyHeader">
           <div
@@ -120,6 +115,7 @@ export const CreateVacancyPage: FC = () => {
             </Title>
             <Button onClick={handleBack}>{t("common.back", { defaultValue: "Back" })}</Button>
           </div>
+
           {!isMobile ? (
             <Text type="secondary">
               {t("vacancies.createHint", {
@@ -138,6 +134,7 @@ export const CreateVacancyPage: FC = () => {
             onFinish={onFinish}
             initialValues={{ jobType: "full_time" as JobType }}
             requiredMark
+            data-testid="vacancy-create-form"
           >
             <Row gutter={isLarge ? 20 : 14}>
               <Col xs={24} lg={10}>
@@ -159,6 +156,7 @@ export const CreateVacancyPage: FC = () => {
                       placeholder={t("vacancies.placeholders.title", {
                         defaultValue: "e.g. Senior Frontend Engineer",
                       })}
+                      data-testid="vacancy-title"
                     />
                   </Form.Item>
 
@@ -171,6 +169,7 @@ export const CreateVacancyPage: FC = () => {
                       placeholder={t("vacancies.placeholders.location", {
                         defaultValue: "e.g. Yerevan",
                       })}
+                      data-testid="vacancy-location"
                     />
                   </Form.Item>
 
@@ -215,6 +214,7 @@ export const CreateVacancyPage: FC = () => {
                       defaultValue: "Responsibilities, requirements, benefits, and hiring process.",
                     })}
                     autoSize={{ minRows: isLarge ? 14 : 8, maxRows: isLarge ? 18 : 12 }}
+                    data-testid="vacancy-description"
                   />
                 </Form.Item>
               </Col>
@@ -227,6 +227,7 @@ export const CreateVacancyPage: FC = () => {
                 loading={isLoading}
                 block={isMobile}
                 size="large"
+                data-testid="vacancy-create-submit"
               >
                 {t("common.create", { defaultValue: "Create" })}
               </Button>

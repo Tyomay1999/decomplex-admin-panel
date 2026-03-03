@@ -84,10 +84,10 @@ export const VacancyTable: FC<VacancyTableProps> = ({
         width: 260,
         render: (_value: unknown, row: VacancyDto) => (
           <Space>
-            <Button onClick={() => onView(row.id)}>
+            <Button onClick={() => onView(row.id)} data-testid={`vacancy-view-${row.id}`}>
               {t("common.view", { defaultValue: "View" })}
             </Button>
-            <Button onClick={() => onApplications(row.id)}>
+            <Button onClick={() => onApplications(row.id)} data-testid={`vacancy-apps-${row.id}`}>
               {t("vacancies.applications", { defaultValue: "Applications" })}
             </Button>
           </Space>
@@ -109,7 +109,7 @@ export const VacancyTable: FC<VacancyTableProps> = ({
   };
 
   return (
-    <Card styles={{ body: { padding: 0 } }}>
+    <Card styles={{ body: { padding: 0 } }} data-testid="vacancies-table-card">
       <Table
         rowKey="id"
         columns={columns}
@@ -118,6 +118,11 @@ export const VacancyTable: FC<VacancyTableProps> = ({
         pagination={false}
         onChange={handleChange}
         scroll={{ x: "max-content" }}
+        data-testid="vacancies-table"
+        rowClassName={(record) => `e2e-vacancy-row e2e-vacancy-row-${record.id}`}
+        onRow={(record) => ({
+          "data-testid": `vacancies-row-${record.id}`,
+        })}
         locale={{
           filterConfirm: t("table.filter.ok", { defaultValue: "OK" }),
           filterReset: t("table.filter.reset", { defaultValue: "Reset" }),

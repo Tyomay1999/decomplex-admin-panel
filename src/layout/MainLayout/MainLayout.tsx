@@ -165,7 +165,7 @@ export const MainLayout: FC<Props> = ({
   const topBarUser = useMemo(() => toTopBarUser(user), [user]);
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh" }} data-testid="layout-main">
       {!isMobile ? (
         <Sider
           collapsible
@@ -210,6 +210,7 @@ export const MainLayout: FC<Props> = ({
 
         <Content
           className="app-shellContent"
+          data-testid="layout-content"
           style={{
             margin: contentMargin,
             padding: contentPadding,
