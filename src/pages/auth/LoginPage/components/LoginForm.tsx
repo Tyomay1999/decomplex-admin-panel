@@ -32,6 +32,7 @@ export const LoginForm: FC<Props> = ({ form, isLoading, onFinish, t }) => {
           prefix={<UserOutlined />}
           placeholder={t("auth.emailPlaceholder")}
           autoComplete="email"
+          data-testid="login-email"
         />
       </Form.Item>
 
@@ -46,6 +47,7 @@ export const LoginForm: FC<Props> = ({ form, isLoading, onFinish, t }) => {
           prefix={<LockOutlined />}
           placeholder={t("auth.passwordPlaceholder")}
           autoComplete="current-password"
+          data-testid="login-password"
         />
       </Form.Item>
 
@@ -54,7 +56,14 @@ export const LoginForm: FC<Props> = ({ form, isLoading, onFinish, t }) => {
       </Form.Item>
 
       <Form.Item style={{ marginTop: 12 }}>
-        <Button type="primary" htmlType="submit" size="large" block loading={isLoading}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          size="large"
+          block
+          loading={isLoading}
+          data-testid="login-submit"
+        >
           {t("auth.loginButton")}
         </Button>
       </Form.Item>

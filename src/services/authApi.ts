@@ -57,6 +57,28 @@ const pickUserFromMe = (data: MeResponseData): UserDto => {
   return data;
 };
 
+export const onLoginQueryStarted = async (
+  arg: LoginPayload,
+  ctx: { queryFulfilled: Promise<{ data: LoginResponseData }>; dispatch: (a: unknown) => unknown },
+): Promise<void> => {
+  try {
+    const { data } = await ctx.queryFulfilled;
+
+    if (data.fingerprintHash) saveServerFingerprint(data.fingerprintHash);
+
+    const days = arg.rememberUser ? 30 : 7;
+    setAccessTokenCookie(data.accessToken, days);
+
+    if (typeof data.refreshToken === "string" && data.refreshToken.trim().length > 0) {
+      setRefreshTokenCookie(data.refreshToken, days);
+    }
+
+    ctx.dispatch(setTokenOnly({ accessToken: data.accessToken }));
+  } catch {
+    void 0;
+  }
+};
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,

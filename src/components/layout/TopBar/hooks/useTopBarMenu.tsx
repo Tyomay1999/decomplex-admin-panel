@@ -94,21 +94,31 @@ const buildSettingsItems = (p: { t: TFn; currentLanguage: Lang; isDark: boolean 
 
   const language: MenuItem = {
     key: "language",
-    label: t("language.label", { defaultValue: "Language" }),
+    label: (
+      <span data-testid="topbar-language-submenu">
+        {t("language.label", { defaultValue: "Language" })}
+      </span>
+    ),
     children: [
       {
         key: "lang:en",
-        label: t("language.en", { defaultValue: "English" }),
+        label: (
+          <span data-testid="topbar-lang-en">{t("language.en", { defaultValue: "English" })}</span>
+        ),
         disabled: currentLanguage === "en",
       },
       {
         key: "lang:ru",
-        label: t("language.ru", { defaultValue: "Русский" }),
+        label: (
+          <span data-testid="topbar-lang-ru">{t("language.ru", { defaultValue: "Русский" })}</span>
+        ),
         disabled: currentLanguage === "ru",
       },
       {
         key: "lang:hy",
-        label: t("language.hy", { defaultValue: "Հայերեն" }),
+        label: (
+          <span data-testid="topbar-lang-hy">{t("language.hy", { defaultValue: "Հայերեն" })}</span>
+        ),
         disabled: currentLanguage === "hy",
       },
     ],
@@ -116,10 +126,26 @@ const buildSettingsItems = (p: { t: TFn; currentLanguage: Lang; isDark: boolean 
 
   const theme: MenuItem = {
     key: "theme",
-    label: t("theme.label", { defaultValue: "Theme" }),
+    label: (
+      <span data-testid="topbar-theme-submenu">{t("theme.label", { defaultValue: "Theme" })}</span>
+    ),
     children: [
-      { key: "theme:light", label: t("theme.light", { defaultValue: "Light" }), disabled: !isDark },
-      { key: "theme:dark", label: t("theme.dark", { defaultValue: "Dark" }), disabled: isDark },
+      {
+        key: "theme:light",
+        label: (
+          <span data-testid="topbar-theme-light">
+            {t("theme.light", { defaultValue: "Light" })}
+          </span>
+        ),
+        disabled: !isDark,
+      },
+      {
+        key: "theme:dark",
+        label: (
+          <span data-testid="topbar-theme-dark">{t("theme.dark", { defaultValue: "Dark" })}</span>
+        ),
+        disabled: isDark,
+      },
     ],
   };
 

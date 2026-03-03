@@ -92,10 +92,13 @@ const App: FC = () => {
       }}
     >
       <AntdApp>
-        <div className="app-root">
+        <div className="app-root" data-testid="app-root">
           <NotificationsHost />
 
-          <main className={isLoginRoute ? "app-content auth-center" : "app-content"}>
+          <main
+            className={isLoginRoute ? "app-content auth-center" : "app-content"}
+            data-testid="app-content"
+          >
             <AuthBootstrap>
               <Routes>
                 <Route

@@ -14,7 +14,7 @@ export const ProtectedRoute: FC<Props> = ({ children }) => {
 
   if (status === "idle" || status === "checking") {
     return (
-      <div className="route-loader">
+      <div className="route-loader" data-testid="route-loader">
         <div className="route-loaderCard">
           <Spin size="large" />
           <div className="route-loaderText">{t("common.loading", { defaultValue: "Loading" })}</div>

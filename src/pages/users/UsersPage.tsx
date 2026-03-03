@@ -21,7 +21,7 @@ export const UsersPage: FC = () => {
   );
 
   return (
-    <div className="usersPage">
+    <div className="usersPage" data-testid="users-page">
       <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <UsersHeader />
 

@@ -1,4 +1,5 @@
 import { FC, useCallback, useMemo } from "react";
+import type { CSSProperties } from "react";
 import { Button, Card, Descriptions, Grid, Space, Spin, Tag, Typography } from "antd";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -75,43 +76,52 @@ export const VacancyDetailsPage: FC = () => {
   }
 
   const { data, isLoading, isFetching } = useGetVacancyByIdQuery(vacancyId);
-
   const loading = isLoading || isFetching;
+
+  const rootStyle: CSSProperties = {
+    maxWidth: 980,
+    margin: "0 auto",
+    width: "100%",
+  };
 
   if (loading) {
     return (
-      <div style={{ padding: 16 }}>
-        <Spin tip={t("common.loading", { defaultValue: "Loading..." })}>
-          <div style={{ minHeight: 120 }} />
-        </Spin>
+      <div data-testid="vacancy-details-page" style={rootStyle}>
+        <div style={{ padding: 16 }}>
+          <Spin tip={t("common.loading", { defaultValue: "Loading..." })}>
+            <div style={{ minHeight: 120 }} />
+          </Spin>
+        </div>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="emptyStateWrap">
-        <div className="emptyStateCard">
-          <div className="emptyStateIcon" aria-hidden="true">
-            !
-          </div>
+      <div data-testid="vacancy-details-page" style={rootStyle}>
+        <div className="emptyStateWrap" data-testid="vacancy-details-not-found">
+          <div className="emptyStateCard">
+            <div className="emptyStateIcon" aria-hidden="true">
+              !
+            </div>
 
-          <div className="emptyStateTitle">
-            {t("vacancies.details.notFound", { defaultValue: "Vacancy not found" })}
-          </div>
+            <div className="emptyStateTitle">
+              {t("vacancies.details.notFound", { defaultValue: "Vacancy not found" })}
+            </div>
 
-          <div className="emptyStateSubtitle">
-            {t("vacancies.details.notFoundHint", {
-              defaultValue: "This vacancy may have been deleted or you may not have access.",
-            })}
-          </div>
+            <div className="emptyStateSubtitle">
+              {t("vacancies.details.notFoundHint", {
+                defaultValue: "This vacancy may have been deleted or you may not have access.",
+              })}
+            </div>
 
-          <div className="emptyStateActions">
-            <Button onClick={handleBack}>{t("common.back", { defaultValue: "Back" })}</Button>
+            <div className="emptyStateActions">
+              <Button onClick={handleBack}>{t("common.back", { defaultValue: "Back" })}</Button>
 
-            <Button type="primary" onClick={() => navigate("/vacancies")}>
-              {t("vacancies.actions.goToList", { defaultValue: "Go to vacancies" })}
-            </Button>
+              <Button type="primary" onClick={() => navigate("/vacancies")}>
+                {t("vacancies.actions.goToList", { defaultValue: "Go to vacancies" })}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -121,13 +131,7 @@ export const VacancyDetailsPage: FC = () => {
   const createdAt = createdAtFormatter(data.createdAt);
 
   return (
-    <div
-      style={{
-        maxWidth: 980,
-        margin: "0 auto",
-        width: "100%",
-      }}
-    >
+    <div data-testid="vacancy-details-page" style={rootStyle}>
       <Space orientation="vertical" size={12} style={{ width: "100%" }}>
         <Space style={{ width: "100%", justifyContent: "space-between" }} wrap>
           <Title level={4} style={{ margin: 0 }}>

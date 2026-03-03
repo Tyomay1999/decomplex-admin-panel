@@ -99,6 +99,7 @@ export const VacancyApplicationsPage: FC = () => {
 
   return (
     <div
+      data-testid="vacancy-applications-page"
       style={{
         maxWidth: 1100,
         margin: "0 auto",
